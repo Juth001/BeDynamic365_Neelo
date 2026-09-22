@@ -154,6 +154,16 @@ page 82100 "BeDyn Pleo Setup"
                 ToolTip = 'Abre la tabla de equivalencias entre el empleado de Pleo y el comprador/vendedor de Business Central.';
             }
         }
+        area(Promoted)
+        {
+            group(Category_Mappings)
+            {
+                Caption = 'Mapeos';
+                actionref(VendorMapping_Promoted; VendorMapping) { }
+                actionref(ExpenseMap_Promoted; ExpenseMap) { }
+                actionref(PurchaserMapping_Promoted; PurchaserMapping) { }
+            }
+        }
     }
 
     trigger OnOpenPage()
