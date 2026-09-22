@@ -1,5 +1,8 @@
 namespace BeDynamic.PleoImport;
 
+using BeDynamic.PropertyWizard;
+using System.Environment;
+
 permissionset 82100 "BeDyn Pleo Import"
 {
     Caption = 'Importación Pleo';
@@ -26,9 +29,12 @@ permissionset 82100 "BeDyn Pleo Import"
         tabledata "BeDyn Pleo Expense Archive" = RIMD,
         table "BeDyn Pleo Posting Preview" = X,
         tabledata "BeDyn Pleo Posting Preview" = RIMD,
+        tabledata "BeDyn Property Mgt. Company" = R,
+        tabledata Company = R,
         codeunit "BeDyn Pleo CSV Reader" = X,
         codeunit "BeDyn Pleo Validation" = X,
         codeunit "BeDyn Pleo Import Process" = X,
+        codeunit "BeDyn Pleo Import Router" = X,
         page "BeDyn Pleo Setup" = X,
         page "BeDyn Pleo Import Worksheet" = X,
         page "BeDyn Pleo Vendor Mapping" = X,

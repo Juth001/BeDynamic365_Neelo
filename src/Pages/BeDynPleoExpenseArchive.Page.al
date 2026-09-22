@@ -73,6 +73,14 @@ page 82105 "BeDyn Pleo Expense Archive"
                 {
                     ApplicationArea = All;
                 }
+                field("Mgt. Company Code"; Rec."Mgt. Company Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Source Company"; Rec."Source Company")
+                {
+                    ApplicationArea = All;
+                }
                 field(Category; Rec.Category)
                 {
                     ApplicationArea = All;

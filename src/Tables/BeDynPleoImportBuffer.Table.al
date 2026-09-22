@@ -209,6 +209,23 @@ table 82101 "BeDyn Pleo Import Buffer"
             Caption = 'Pago registrado';
             ToolTip = 'Indica que el pago contra el banco Pleo ya se ha registrado.';
         }
+
+        // ---------------- EMPRESA ----------------
+        field(70; "Mgt. Company Code"; Code[10])
+        {
+            Caption = 'Empresa gestora';
+            ToolTip = 'Segundo segmento del código de propiedad, que dice de qué gestora es el gasto. Sin propiedad, la gestora principal (titular del monedero).';
+        }
+        field(71; "Target Company"; Text[30])
+        {
+            Caption = 'Empresa destino';
+            ToolTip = 'Empresa de Business Central donde se tiene que contabilizar esta línea. Las que no son de la empresa actual se envían a la suya al distribuir.';
+        }
+        field(72; "Source Company"; Text[30])
+        {
+            Caption = 'Empresa origen';
+            ToolTip = 'Empresa en la que se importó el fichero, cuando la línea llegó desde otra empresa al distribuir. Vacía = se importó en esta empresa.';
+        }
     }
 
     keys

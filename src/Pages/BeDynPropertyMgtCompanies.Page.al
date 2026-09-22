@@ -26,6 +26,10 @@ page 82401 "BeDyn Property Mgt. Companies"
                 {
                     ApplicationArea = All;
                 }
+                field("Main Company"; Rec."Main Company")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

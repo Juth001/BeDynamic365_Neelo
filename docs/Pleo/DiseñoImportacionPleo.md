@@ -159,6 +159,23 @@ Las líneas procesadas no se acumulan en la hoja de trabajo: se mueven a la tabl
 - El archivo conserva todos los datos de la línea (origen Pleo, resolución, documentos generados, avisos) y participa en la **deduplicación** (§2.8): un gasto archivado no se vuelve a importar.
 - Desde el archivo, "Ver documento" abre la factura/abono creado o registrado (los diarios se consultan por los movimientos de contabilidad/banco con el nº de documento `prefijo + recibo`).
 
+### 2.11 Un fichero, varias empresas
+
+El CSV de Pleo viene mezclado: trae gastos de propiedades de todas las gestoras. El **segundo segmento del código de propiedad** dice de cuál es cada una (en `ES-`**`01`**`-01-065`, el `01` es la gestora) y cada gestora apunta a una empresa de Business Central en el campo *Empresa* de **Empresas gestoras de propiedades** (tabla 82401).
+
+Al importar, antes de validar, el lote se **reparte por empresa** (codeunit 82103 *Pleo Import Router*, mismo patrón que el router de reservas):
+
+- Las líneas de propiedades de **otra empresa** se copian con `ChangeCompany` al buffer de Pleo de la suya, con el mismo código de lote y en estado *Pendiente*, y se borran de esta. Allí se validan (acción *Revalidar*) y se procesan contra su propia configuración y mapeos. La línea conserva la **empresa origen** para trazabilidad.
+- Las líneas **sin propiedad** (recargas y cashbacks del monedero, gastos sin proyecto) van siempre a la **empresa principal** (check *Empresa principal* en Empresas gestoras; solo puede haber una), titular del monedero Pleo, se importen donde se importen.
+- Una línea se queda aquí **en error** si su código de propiedad no lleva un segmento que corresponda a ninguna gestora (p. ej. `0` o `P51`), si la gestora no tiene empresa asignada o si esa empresa no existe. El código de proyecto es editable en la hoja para corregirlo y volver a **Distribuir por empresa**.
+- Reenviar no duplica: si el *Expense ID* ya está en el buffer o en el archivo de la empresa destino, la línea se descarta como duplicada y el mensaje lo indica.
+- Solo se mueven líneas sin documento generado (pendientes, validadas, con error u omitidas).
+
+Se mueve el staging y no el documento por la misma razón que en reservas: los desencadenadores de tabla se ejecutan en la empresa actual, de modo que series numéricas, dimensiones y activos fijos deben crearse de forma nativa en la empresa destino. Requisitos: la tabla de gestoras con el campo *Empresa* relleno y una marcada como principal, y el usuario con el conjunto de permisos *Importación Pleo* también en las empresas destino.
+
+> Contabilidad del monedero único: cada empresa paga contra el *Banco Pleo* de su configuración. En una empresa secundaria ese banco debe representar la cuenta corriente con la principal; el asiento espejo en la principal (cargo a la secundaria contra el monedero) no lo genera el módulo.
+
+
 ---
 
 ## 3. Diseño técnico
@@ -186,6 +203,7 @@ Las líneas procesadas no se acumulan en la hoja de trabajo: se mueven a la tabl
 | Codeunit | 82100 | BeDyn Pleo CSV Reader | `src/Codeunits/BeDynPleoCSVReader.Codeunit.al` |
 | Codeunit | 82101 | BeDyn Pleo Validation | `src/Codeunits/BeDynPleoValidation.Codeunit.al` |
 | Codeunit | 82102 | BeDyn Pleo Import Process | `src/Codeunits/BeDynPleoImportProcess.Codeunit.al` |
+| Codeunit | 82103 | BeDyn Pleo Import Router (reparto por empresa) | `src/Codeunits/BeDynPleoImportRouter.Codeunit.al` |
 | Enum | 82100 | BeDyn Pleo Expense Type | `src/Enums/BeDynPleoExpenseType.Enum.al` |
 | Enum | 82101 | BeDyn Pleo Line Status | `src/Enums/BeDynPleoLineStatus.Enum.al` |
 | Enum | 82102 | BeDyn Pleo Post Action | `src/Enums/BeDynPleoPostAction.Enum.al` |
@@ -264,6 +282,7 @@ Bloques de campos:
 - **Datos crudos del CSV** (10–35): fecha, recibo, tipo, importe (con signo original), divisa, comercio, categoría, empleado, nota, equipo, Expense ID, URL recibo, proyecto (código/nombre), proveedor Pleo (código/nombre). Los campos 32–33 (código/nombre del tipo de gasto) quedan obsoletos: el export ya no los trae.
 - **Resolución** (40–45): `Mapped Vendor No.`, `G/L Account No.`, `CAPEX`, `Fixed Asset No.`, `Purchaser Code`, `Extraordinary` (gasto extraordinario). Editables en la hoja para correcciones manuales antes de procesar (salvo los flags, que son de solo lectura).
 - **Estado/resultado** (50–62): `Status`, `Error Message`, `Warning Message` (aviso no bloqueante), `Created Document No.`, `Posted Document No.`, `Payment Posted`.
+- **Empresa** (70–72): `Mgt. Company Code`, `Target Company`, `Source Company`, rellenados por el reparto por empresa (§2.11).
 
 Claves secundarias: `(Batch Code, Status)` para el procesado por lotes y `(Expense ID)` para la deduplicación.
 
@@ -314,13 +333,13 @@ Detalles de implementación:
 ### 3.7 Hoja de trabajo (página 82101)
 
 - Lista descendente por `Entry No.`, `InsertAllowed = false`. **Línea completa coloreada** (mismo `StyleExpr` en todos los campos del repeater): Error = rojo (`Unfavorable`), con aviso = amarillo (`Ambiguous`), Validada/Creada/Registrada/Pagada = verde (`Favorable`), Omitida = gris (`Subordinate`).
-- Acciones de proceso: **Importar CSV** (UploadIntoStream → TempBlob → Reader → validación automática del lote → filtra la vista al lote nuevo), **Revalidar**, **Vista previa del registro** (`BuildPreview` vuelca en la tabla temporal 82106 una línea por documento/diario que se generaría y la muestra en la página modal 82106) y **Generar documentos y pagos** (respetan la selección con `SetSelectionFilter`), **Archivar procesadas** (con confirmación), **Ver documento** (abre borrador o registrado según estado y signo), **Ver todos los lotes** (quita el filtro de lote).
+- Acciones de proceso: **Importar CSV** (UploadIntoStream → TempBlob → Reader → reparto por empresa (§2.11) → validación automática del lote → filtra la vista al lote nuevo), **Distribuir por empresa** (relanza el reparto del lote de la línea actual), **Revalidar**, **Vista previa del registro** (`BuildPreview` vuelca en la tabla temporal 82106 una línea por documento/diario que se generaría y la muestra en la página modal 82106) y **Generar documentos y pagos** (respetan la selección con `SetSelectionFilter`), **Archivar procesadas** (con confirmación), **Ver documento** (abre borrador o registrado según estado y signo), **Ver todos los lotes** (quita el filtro de lote).
 - Navegación directa a setup, mapeos y archivo de gastos.
 - **Página de archivo** (82105): lista de solo lectura (`Editable = false`, UsageCategory *History*) con los mismos datos más fecha/usuario de archivado, y acción "Ver documento".
 
 ### 3.8 Permisos
 
-PermissionSet 82100 **"Importación Pleo"** (asignable): RIMD sobre las 8 tablas del módulo y ejecución de codeunits y páginas. El usuario necesita además los permisos estándar de compras/registro (P&L, diarios, activos fijos) que correspondan a su rol.
+PermissionSet 82100 **"Importación Pleo"** (asignable): lectura de *Empresas gestoras de propiedades* y *Company*, RIMD sobre las 8 tablas del módulo y ejecución de codeunits y páginas. El usuario necesita además los permisos estándar de compras/registro (P&L, diarios, activos fijos) que correspondan a su rol.
 
 ### 3.9 Puntos de extensión y consideraciones
 

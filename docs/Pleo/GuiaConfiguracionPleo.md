@@ -65,7 +65,8 @@
 - **Configuración de registro del IVA**: la combinación grupo de negocio del proveedor × grupo IVA producto único debe existir con el % soportado correcto.
 - **Compradores/Vendedores** con su **dimensión por defecto asignada en la ficha** (p. ej. dimensión COMPRADOR). El módulo fusiona siempre esas dimensiones en todos los registros; si la ficha no las tiene, no hay nada que asignar.
 - **Dimensión de proyecto** creada (los valores pueden auto-crearse).
-- **Permisos**: conjunto "Importación Pleo" + permisos estándar de compras, diarios y activos fijos del usuario.
+- **Empresas gestoras de propiedades**: cada gestora con su *Empresa* de BC rellena y una marcada como *Empresa principal* (titular del monedero). El segundo segmento del código de propiedad decide a qué empresa va cada gasto; sin propiedad, a la principal.
+- **Permisos**: conjunto "Importación Pleo" + permisos estándar de compras, diarios y activos fijos del usuario, en cada empresa a la que se envíen líneas.
 
 ### 1.8 Checklist de puesta en marcha (orden recomendado)
 
@@ -89,9 +90,10 @@
 2. **Codificación**: se detecta automáticamente — BOM UTF-16 o UTF-8 manda; sin BOM se valida si el contenido es UTF-8 y, si no (típico CSV re-guardado por Excel en ANSI), se lee como Windows. La opción del setup solo desempata el caso sin BOM.
 3. **Cabecera por nombre**: las columnas se localizan por su título (Date, Receipt, Expense type, Amount, Currency, Source description, Category, Owner, Note, Receipt URLs, Expense ID, Proyecto‑Name/Code, Proveedor‑Name/Code…), no por posición. Si no se encuentran "Date" y "Amount", se aborta con aviso.
 4. **Lote**: cada importación crea un lote `PL<añomesdíahoraminutoseg>`; la hoja se filtra automáticamente al lote recién importado.
-5. **Deduplicación**: cada gasto trae un **Expense ID** único. Si ya existe en la hoja de trabajo **o en el archivo**, la fila se descarta como duplicada. Se pueden re-exportar periodos solapados de Pleo sin riesgo de duplicar contabilidad.
-6. Las filas sin fecha ni importe (basura al final del fichero) se ignoran.
-7. Tras la carga, el lote se **valida automáticamente**.
+5. **Reparto por empresa**: antes de validar, cada línea se envía a la empresa de su propiedad (segundo segmento del código) o, sin propiedad, a la empresa principal. Las de otras empresas desaparecen de esta hoja y aparecen en la suya, en estado Pendiente y con el mismo lote, para validarlas (*Revalidar*) y procesarlas allí. El mensaje dice cuántas se quedan, cuántas van a cada empresa y cuántas quedan bloqueadas por un código de propiedad sin gestora. La acción *Distribuir por empresa* lo relanza.
+6. **Deduplicación**: cada gasto trae un **Expense ID** único. Si ya existe en la hoja de trabajo **o en el archivo**, la fila se descarta como duplicada. Se pueden re-exportar periodos solapados de Pleo sin riesgo de duplicar contabilidad.
+7. Las filas sin fecha ni importe (basura al final del fichero) se ignoran.
+8. Tras la carga, el lote se **valida automáticamente**.
 
 ### 2.2 Validación (automática tras importar; acción "Revalidar" tras corregir)
 
@@ -161,6 +163,7 @@ Acción "Generar documentos y pagos" — procesa solo las líneas **Validadas** 
 ### 3.6 Límites actuales
 
 - Solo **EUR**.
+- El reparto por empresa mueve solo la hoja de importación; el asiento espejo del monedero único en la empresa principal no se genera.
 - Grupo de IVA **único** para todas las compras (Pleo no desglosa IVA).
 - Un documento por movimiento (no se agrupan compras del mismo proveedor).
 - Los mapeos de compradores y de categorías son por **nombre exacto** del empleado y de la categoría en Pleo.

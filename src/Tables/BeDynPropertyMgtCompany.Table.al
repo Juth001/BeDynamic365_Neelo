@@ -26,7 +26,25 @@ table 82401 "BeDyn Property Mgt. Company"
         {
             Caption = 'Empresa';
             TableRelation = Company.Name;
-            ToolTip = 'Empresa de Business Central donde vive la contabilidad de esta gestora. Al importar reservas, las de una propiedad cuyo segundo segmento sea este código se llevan a esta empresa.';
+            ToolTip = 'Empresa de Business Central donde vive la contabilidad de esta gestora. Al importar reservas o gastos de Pleo, las líneas de una propiedad cuyo segundo segmento sea este código se llevan a esta empresa.';
+        }
+        field(4; "Main Company"; Boolean)
+        {
+            Caption = 'Empresa principal';
+            ToolTip = 'Empresa titular del monedero Pleo: recibe las líneas de Pleo sin propiedad (recargas, cashbacks y gastos sin proyecto), se importen donde se importen. Solo puede haber una.';
+
+            trigger OnValidate()
+            var
+                OtherCompany: Record "BeDyn Property Mgt. Company";
+                OnlyOneMainErr: Label 'Solo puede haber una empresa principal: ya lo es %1 (%2).', Comment = '%1 = código, %2 = nombre';
+            begin
+                if not "Main Company" then
+                    exit;
+                OtherCompany.SetRange("Main Company", true);
+                OtherCompany.SetFilter(Code, '<>%1', Code);
+                if OtherCompany.FindFirst() then
+                    Error(OnlyOneMainErr, OtherCompany.Code, OtherCompany.Name);
+            end;
         }
     }
 
@@ -64,6 +82,16 @@ table 82401 "BeDyn Property Mgt. Company"
         if Segments.Count() < 2 then
             exit(false);
         exit(Rec.Get(CopyStr(Segments.Get(2), 1, MaxStrLen(Rec.Code))));
+    end;
+
+    // Empresa principal: titular del monedero Pleo; recibe las líneas sin
+    // propiedad. Solo puede haber una (se valida al marcarla). Deja el registro
+    // posicionado en ella.
+    procedure GetMainCompany(): Boolean
+    begin
+        Rec.Reset();
+        Rec.SetRange("Main Company", true);
+        exit(Rec.FindFirst());
     end;
 
     local procedure InsertCompany(NewCode: Code[10]; NewName: Text[100])

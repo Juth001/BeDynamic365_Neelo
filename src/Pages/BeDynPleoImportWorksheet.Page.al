@@ -93,6 +93,25 @@ page 82101 "BeDyn Pleo Import Worksheet"
                 field("Project Code"; Rec."Project Code")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Código de la propiedad (proyecto de Pleo). Su segundo segmento decide la empresa a la que va la línea. Se puede corregir a mano y volver a distribuir o revalidar.';
+                    StyleExpr = StatusStyle;
+                }
+                field("Mgt. Company Code"; Rec."Mgt. Company Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    StyleExpr = StatusStyle;
+                }
+                field("Target Company"; Rec."Target Company")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Visible = false;
+                    StyleExpr = StatusStyle;
+                }
+                field("Source Company"; Rec."Source Company")
+                {
+                    ApplicationArea = All;
                     Editable = false;
                     StyleExpr = StatusStyle;
                 }
@@ -214,6 +233,24 @@ page 82101 "BeDyn Pleo Import Worksheet"
                 trigger OnAction()
                 begin
                     ImportFile();
+                end;
+            }
+            action(DistributeByCompany)
+            {
+                Caption = 'Distribuir por empresa';
+                ApplicationArea = All;
+                Image = ChangeTo;
+                ToolTip = 'Reparte las líneas del lote según la empresa gestora del código de propiedad: las de otras empresas se envían a la hoja de importación de Pleo de la suya y las que no tienen propiedad, a la empresa principal.';
+
+                trigger OnAction()
+                var
+                    Router: Codeunit "BeDyn Pleo Import Router";
+                    NoBatchErr: Label 'Sitúate en una línea del lote que quieras distribuir.';
+                begin
+                    if Rec."Batch Code" = '' then
+                        Error(NoBatchErr);
+                    Router.DistributeBatch(Rec."Batch Code");
+                    CurrPage.Update(false);
                 end;
             }
             action(ValidateLines)
@@ -399,6 +436,7 @@ page 82101 "BeDyn Pleo Import Worksheet"
             {
                 Caption = 'Proceso';
                 actionref(ImportCSV_Promoted; ImportCSV) { }
+                actionref(DistributeByCompany_Promoted; DistributeByCompany) { }
                 actionref(ValidateLines_Promoted; ValidateLines) { }
                 actionref(PreviewPosting_Promoted; PreviewPosting) { }
                 actionref(ProcessLines_Promoted; ProcessLines) { }
@@ -443,6 +481,7 @@ page 82101 "BeDyn Pleo Import Worksheet"
         PleoCategoryMap: Record "BeDyn Pleo Category Map";
         TempBlob: Codeunit "Temp Blob";
         Reader: Codeunit "BeDyn Pleo CSV Reader";
+        Router: Codeunit "BeDyn Pleo Import Router";
         Validation: Codeunit "BeDyn Pleo Validation";
         InStr: InStream;
         OutStr: OutStream;
@@ -465,6 +504,9 @@ page 82101 "BeDyn Pleo Import Worksheet"
         MappingCountBefore := VendorMapping.Count() + PurchaserMapping.Count() + PleoCategoryMap.Count();
         BatchCode := CopyStr('PL' + Format(CurrentDateTime(), 0, '<Year4><Month,2><Day,2><Hours24,2><Minutes,2><Seconds,2>'), 1, 20);
         Reader.ImportFromBlob(TempBlob, BatchCode, ImportedCount, DuplicateCount);
+        // Primero se reparte por empresa: validar antes no tendría sentido, porque
+        // las propiedades y los mapeos de otras empresas no están en esta.
+        Router.DistributeBatch(BatchCode);
         Validation.ValidateBatch(BatchCode);
 
         Rec.SetRange("Batch Code", BatchCode);
