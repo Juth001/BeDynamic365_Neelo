@@ -13,7 +13,9 @@ permissionset 82800 "BeDyn Res. Import"
     Permissions =
         table "BeDyn Res. Import Line" = X,
         tabledata "BeDyn Res. Import Line" = RIMD,
+        table "BeDyn Customer Type" = X,
         tabledata "BeDyn Customer Type" = RIMD,
+        table "BeDyn Guest Type" = X,
         tabledata "BeDyn Guest Type" = RIMD,
         tabledata "BeDyn Property Mgt. Setup" = R,
         tabledata "BeDyn Property Setup" = R,
