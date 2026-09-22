@@ -15,7 +15,7 @@ Las propiedades y las subpropiedades **tienen que existir antes**: la importaci�
 
 ## Un fichero, varias empresas
 
-El fichero viene mezclado: trae reservas de todas las gestoras. El **segundo segmento del código de propiedad** dice de cuál es cada una — en `ES-`**`01`**`-01-065` ese `01` es la gestora—, y cada gestora apunta a una empresa de Business Central en el campo *Empresa* de **Empresas gestoras de propiedades**.
+El fichero viene mezclado: trae reservas de todas las gestoras. El **segundo segmento del código de propiedad** dice de cuál es cada una — en `ES-`**`01`**`-01-065` ese `01` es la gestora—, y cada gestora apunta a una empresa de Business Central en el campo *Empresa* de **Empresas gestoras de propiedades**. La tabla es compartida entre empresas: se mantiene una sola vez y vale también para la importación de Pleo.
 
 Al distribuir, las líneas que no son de la empresa actual se copian con `ChangeCompany` a la hoja de importación de su empresa y desaparecen de esta. Después hay que **cambiar a esa empresa**, abrir la hoja, elegir el mismo lote y validar y procesar allí. El mensaje del reparto dice cuántas líneas se quedan y cuántas van a cada empresa.
 

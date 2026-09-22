@@ -56,7 +56,7 @@ Página **Configuración asistente propiedades**:
 | Plantilla de producto | Plantilla de producto estándar de BC que el asistente propone en el paso 5 (aporta tipo, unidad de medida, grupos de registro y dimensiones de la plantilla). Vacía = producto sin esos datos, a completar a mano. |
 | Cliente genérico proyectos | Cliente que se asigna a los proyectos de propiedad creados por el asistente. |
 
-**Empresas gestoras**: lista propia (se precarga con 01 Tepoz y 02 Erasmus la primera vez) editable desde la acción *Empresas gestoras* de la configuración.
+**Empresas gestoras**: lista propia (se precarga con 01 Tepoz y 02 Erasmus la primera vez), **compartida entre todas las empresas** de la base de datos y con el check *Empresa principal* (titular del monedero Pleo; solo puede haber una), editable desde la acción *Empresas gestoras* de la configuración.
 
 **Plantilla de tareas**: lista de las tareas que se crean en cada proyecto de propiedad, editable desde la acción *Plantilla de tareas*. Se precarga con 10 Mobiliario, 20 Material Obra, 30 Decoración, 40 Mantenimiento, 50 Electrodomésticos, 60 Menaje y 70 Otro. Cada tarea puede indicar opcionalmente tipo (cuenta contable, producto o recurso), nº y cantidad: en ese caso el asistente crea además una línea de planificación de tipo presupuesto para la tarea.
 

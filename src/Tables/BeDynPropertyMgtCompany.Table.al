@@ -6,6 +6,10 @@ table 82401 "BeDyn Property Mgt. Company"
 {
     Caption = 'Empresa gestora de propiedades';
     DataClassification = CustomerContent;
+    // Compartida entre todas las empresas de la base de datos: las gestoras y su
+    // empresa de BC se mantienen una sola vez y valen para el asistente de
+    // propiedades, la importación de reservas y la de Pleo.
+    DataPerCompany = false;
     LookupPageId = "BeDyn Property Mgt. Companies";
     DrillDownPageId = "BeDyn Property Mgt. Companies";
 

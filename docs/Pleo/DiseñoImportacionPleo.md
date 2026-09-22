@@ -161,7 +161,7 @@ Las líneas procesadas no se acumulan en la hoja de trabajo: se mueven a la tabl
 
 ### 2.11 Un fichero, varias empresas
 
-El CSV de Pleo viene mezclado: trae gastos de propiedades de todas las gestoras. El **segundo segmento del código de propiedad** dice de cuál es cada una (en `ES-`**`01`**`-01-065`, el `01` es la gestora) y cada gestora apunta a una empresa de Business Central en el campo *Empresa* de **Empresas gestoras de propiedades** (tabla 82401).
+El CSV de Pleo viene mezclado: trae gastos de propiedades de todas las gestoras. El **segundo segmento del código de propiedad** dice de cuál es cada una (en `ES-`**`01`**`-01-065`, el `01` es la gestora) y cada gestora apunta a una empresa de Business Central en el campo *Empresa* de **Empresas gestoras de propiedades** (tabla 82401, compartida entre empresas).
 
 Al importar, antes de validar, el lote se **reparte por empresa** (codeunit 82103 *Pleo Import Router*, mismo patrón que el router de reservas):
 

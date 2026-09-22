@@ -65,7 +65,7 @@
 - **Configuración de registro del IVA**: la combinación grupo de negocio del proveedor × grupo IVA producto único debe existir con el % soportado correcto.
 - **Compradores/Vendedores** con su **dimensión por defecto asignada en la ficha** (p. ej. dimensión COMPRADOR). El módulo fusiona siempre esas dimensiones en todos los registros; si la ficha no las tiene, no hay nada que asignar.
 - **Dimensión de proyecto** creada (los valores pueden auto-crearse).
-- **Empresas gestoras de propiedades**: cada gestora con su *Empresa* de BC rellena y una marcada como *Empresa principal* (titular del monedero). El segundo segmento del código de propiedad decide a qué empresa va cada gasto; sin propiedad, a la principal.
+- **Empresas gestoras de propiedades** (tabla compartida entre empresas, se mantiene una sola vez): cada gestora con su *Empresa* de BC rellena y una marcada como *Empresa principal* (titular del monedero). El segundo segmento del código de propiedad decide a qué empresa va cada gasto; sin propiedad, a la principal.
 - **Permisos**: conjunto "Importación Pleo" + permisos estándar de compras, diarios y activos fijos del usuario, en cada empresa a la que se envíen líneas.
 
 ### 1.8 Checklist de puesta en marcha (orden recomendado)
