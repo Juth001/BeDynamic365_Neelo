@@ -55,7 +55,7 @@
 | Mapeo | Clave | Destino | Notas |
 |---|---|---|---|
 | **Proveedores** | "Proveedor - Code" del CSV | Proveedor BC | Sin proveedor asignado → se usa el genérico |
-| **Categorías** | "Category" del CSV (**nombre exacto** de la categoría de Pleo) | Cuenta de gasto **o** CAPEX + clase/subclase de activo, y tarea de proyecto | CAPEX ignora la cuenta; la clase/subclase determinan qué activo de la propiedad recibe el coste y con qué se crea. Al desmarcar CAPEX se limpian. Las líneas sin categoría van a la cuenta por defecto. ⚠️ Si se renombra una categoría en Pleo, aparecerá como categoría nueva |
+| **Categorías** | "Category" del CSV (**nombre exacto** de la categoría de Pleo) | Cuenta de gasto **o** CAPEX + clase/subclase de activo, y tarea de proyecto | CAPEX ignora la cuenta; la clase/subclase determinan qué activo de la propiedad recibe el coste y con qué se crea. Al desmarcar CAPEX se limpian. Se configura en la página *Mapeo Categorías Pleo*; la antigua *Mapeo Tipos de Gasto Pleo* queda oculta y sin uso. Las líneas sin categoría van a la cuenta por defecto. ⚠️ Si se renombra una categoría en Pleo, aparecerá como categoría nueva |
 | **Compradores** | "Owner" del CSV (**nombre exacto** del empleado) | Comprador/Vendedor BC + check **"No deducible"** | El comprador se asigna a factura, pago y diario, con prioridad sobre el comprador por defecto del proveedor. "No deducible" activa el tratamiento de gasto extraordinario para los gastos **sin justificante** de ese empleado. ⚠️ Si el empleado cambia su nombre en Pleo, aparecerá como empleado nuevo |
 
 ### 1.7 Datos maestros necesarios fuera del módulo

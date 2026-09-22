@@ -106,6 +106,22 @@ table 82105 "BeDyn Pleo Expense Archive"
             Caption = 'Proyecto (Pleo)';
             ToolTip = 'Nombre del proyecto (propiedad) de Pleo.';
         }
+        field(32; "Cost Type Code"; Code[20])
+        {
+            Caption = 'Cód. tipo gasto (Pleo)';
+            ObsoleteState = Pending;
+            ObsoleteReason = 'El export de Pleo ya no incluye "Tipo Gasto - Code"; la cuenta, el CAPEX y la tarea se resuelven por Category.';
+            ObsoleteTag = '1.0.2.8';
+            ToolTip = 'Código del tipo de gasto de Pleo. Columna que ya no existe en el export; se conserva solo por compatibilidad.';
+        }
+        field(33; "Cost Type Name"; Text[100])
+        {
+            Caption = 'Tipo gasto (Pleo)';
+            ObsoleteState = Pending;
+            ObsoleteReason = 'El export de Pleo ya no incluye "Tipo Gasto - Name"; la cuenta, el CAPEX y la tarea se resuelven por Category.';
+            ObsoleteTag = '1.0.2.8';
+            ToolTip = 'Nombre del tipo de gasto de Pleo. Columna que ya no existe en el export; se conserva solo por compatibilidad.';
+        }
         field(34; "Pleo Vendor Code"; Code[20])
         {
             Caption = 'Cód. proveedor (Pleo)';

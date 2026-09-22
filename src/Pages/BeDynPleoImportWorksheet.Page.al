@@ -368,12 +368,12 @@ page 82101 "BeDyn Pleo Import Worksheet"
                 RunObject = page "BeDyn Pleo Vendor Mapping";
                 ToolTip = 'Abre el mapeo de códigos de proveedor de Pleo a proveedores BC.';
             }
-            action(ExpenseMap)
+            action(CategoryMap)
             {
                 Caption = 'Mapeo categorías';
                 ApplicationArea = All;
                 Image = ChartOfAccounts;
-                RunObject = page "BeDyn Pleo Expense Type Map";
+                RunObject = page "BeDyn Pleo Category Map";
                 ToolTip = 'Abre el mapeo de categorías de Pleo a cuentas contables, tratamiento CAPEX y tareas de proyecto.';
             }
             action(PurchaserMapping)
@@ -409,7 +409,7 @@ page 82101 "BeDyn Pleo Import Worksheet"
                 Caption = 'Configuración';
                 actionref(OpenSetup_Promoted; OpenSetup) { }
                 actionref(VendorMapping_Promoted; VendorMapping) { }
-                actionref(ExpenseMap_Promoted; ExpenseMap) { }
+                actionref(CategoryMap_Promoted; CategoryMap) { }
                 actionref(PurchaserMapping_Promoted; PurchaserMapping) { }
                 actionref(OpenArchive_Promoted; OpenArchive) { }
             }
@@ -440,7 +440,7 @@ page 82101 "BeDyn Pleo Import Worksheet"
     var
         VendorMapping: Record "BeDyn Pleo Vendor Mapping";
         PurchaserMapping: Record "BeDyn Pleo Purchaser Mapping";
-        ExpenseTypeMap: Record "BeDyn Pleo Expense Type Map";
+        PleoCategoryMap: Record "BeDyn Pleo Category Map";
         TempBlob: Codeunit "Temp Blob";
         Reader: Codeunit "BeDyn Pleo CSV Reader";
         Validation: Codeunit "BeDyn Pleo Validation";
@@ -462,7 +462,7 @@ page 82101 "BeDyn Pleo Import Worksheet"
         TempBlob.CreateOutStream(OutStr);
         CopyStream(OutStr, InStr);
 
-        MappingCountBefore := VendorMapping.Count() + PurchaserMapping.Count() + ExpenseTypeMap.Count();
+        MappingCountBefore := VendorMapping.Count() + PurchaserMapping.Count() + PleoCategoryMap.Count();
         BatchCode := CopyStr('PL' + Format(CurrentDateTime(), 0, '<Year4><Month,2><Day,2><Hours24,2><Minutes,2><Seconds,2>'), 1, 20);
         Reader.ImportFromBlob(TempBlob, BatchCode, ImportedCount, DuplicateCount);
         Validation.ValidateBatch(BatchCode);
@@ -472,7 +472,7 @@ page 82101 "BeDyn Pleo Import Worksheet"
         Message(DoneMsg, BatchCode, ImportedCount, DuplicateCount);
         // Aviso de mapeos auto-creados en la validación: hay que completarlos antes
         // de procesar (mismo patrón en todas las hojas de importación).
-        NewMappingCount := VendorMapping.Count() + PurchaserMapping.Count() + ExpenseTypeMap.Count() - MappingCountBefore;
+        NewMappingCount := VendorMapping.Count() + PurchaserMapping.Count() + PleoCategoryMap.Count() - MappingCountBefore;
         if NewMappingCount > 0 then
             Message(NewMappingsMsg, NewMappingCount);
     end;

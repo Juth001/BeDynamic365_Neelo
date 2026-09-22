@@ -255,7 +255,7 @@ codeunit 82101 "BeDyn Pleo Validation"
 
     local procedure ResolveAccountOrFixedAsset(var Buffer: Record "BeDyn Pleo Import Buffer"): Text
     var
-        ExpenseMap: Record "BeDyn Pleo Expense Type Map";
+        ExpenseMap: Record "BeDyn Pleo Category Map";
         NoAccountErr: Label 'La categoría Pleo "%1" no tiene cuenta asignada y no hay cuenta por defecto en la configuración.', Comment = '%1 = categoría Pleo';
         NoCategoryErr: Label 'La línea no tiene categoría en Pleo y no hay cuenta por defecto en la configuración.';
     begin
@@ -296,7 +296,7 @@ codeunit 82101 "BeDyn Pleo Validation"
         exit(StrSubstNo(NoAccountErr, Buffer.Category));
     end;
 
-    local procedure ResolveFixedAsset(var Buffer: Record "BeDyn Pleo Import Buffer"; ExpenseMap: Record "BeDyn Pleo Expense Type Map"): Text
+    local procedure ResolveFixedAsset(var Buffer: Record "BeDyn Pleo Import Buffer"; ExpenseMap: Record "BeDyn Pleo Category Map"): Text
     var
         FixedAsset: Record "Fixed Asset";
         FALocationCode: Code[10];
@@ -379,7 +379,7 @@ codeunit 82101 "BeDyn Pleo Validation"
         FALocation.Insert(true);
     end;
 
-    local procedure CreateFixedAsset(var FixedAsset: Record "Fixed Asset"; Buffer: Record "BeDyn Pleo Import Buffer"; ExpenseMap: Record "BeDyn Pleo Expense Type Map"; FALocationCode: Code[10])
+    local procedure CreateFixedAsset(var FixedAsset: Record "Fixed Asset"; Buffer: Record "BeDyn Pleo Import Buffer"; ExpenseMap: Record "BeDyn Pleo Category Map"; FALocationCode: Code[10])
     var
         FADeprBook: Record "FA Depreciation Book";
         FASetup: Record "FA Setup";
@@ -445,7 +445,7 @@ codeunit 82101 "BeDyn Pleo Validation"
     var
         Job: Record Job;
         JobTask: Record "Job Task";
-        ExpenseMap: Record "BeDyn Pleo Expense Type Map";
+        ExpenseMap: Record "BeDyn Pleo Category Map";
         BlockedErr: Label 'El proyecto %1 de la propiedad está bloqueado o no está abierto: desbloquéalo o quita la tarea del mapeo de la categoría.', Comment = '%1 = proyecto';
         NoTaskErr: Label 'El proyecto %1 no tiene la tarea %2 (asignada a la categoría "%3" en el mapeo): créala en el proyecto o quita la tarea del mapeo.', Comment = '%1 = proyecto, %2 = tarea, %3 = categoría Pleo';
         NotPostingErr: Label 'La tarea %1 del proyecto %2 no es de tipo Registro: no admite imputación de gastos.', Comment = '%1 = tarea, %2 = proyecto';

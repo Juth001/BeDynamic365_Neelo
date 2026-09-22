@@ -1,15 +1,12 @@
 namespace BeDynamic.PleoImport;
 
-page 82103 "BeDyn Pleo Expense Type Map"
+page 82107 "BeDyn Pleo Category Map"
 {
-    Caption = 'Mapeo Tipos de Gasto Pleo';
+    Caption = 'Mapeo Categorías Pleo';
     PageType = List;
-    SourceTable = "BeDyn Pleo Expense Type Map";
-    UsageCategory = None;
+    SourceTable = "BeDyn Pleo Category Map";
+    UsageCategory = Administration;
     ApplicationArea = All;
-    ObsoleteState = Pending;
-    ObsoleteReason = 'El export de Pleo ya no incluye las columnas "Tipo Gasto - Name/Code". Sustituida por la página "BeDyn Pleo Category Map" (mapeo por la columna Category).';
-    ObsoleteTag = '1.0.2.8';
 
     layout
     {
@@ -17,11 +14,7 @@ page 82103 "BeDyn Pleo Expense Type Map"
         {
             repeater(Lines)
             {
-                field("Pleo Code"; Rec."Pleo Code")
-                {
-                    ApplicationArea = All;
-                }
-                field("Pleo Name"; Rec."Pleo Name")
+                field("Pleo Category"; Rec."Pleo Category")
                 {
                     ApplicationArea = All;
                 }

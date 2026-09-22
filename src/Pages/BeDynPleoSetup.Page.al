@@ -137,12 +137,12 @@ page 82100 "BeDyn Pleo Setup"
                 RunObject = page "BeDyn Pleo Vendor Mapping";
                 ToolTip = 'Abre la tabla de equivalencias entre el código de proveedor de Pleo y el proveedor de Business Central.';
             }
-            action(ExpenseMap)
+            action(CategoryMap)
             {
                 Caption = 'Mapeo categorías Pleo';
                 ApplicationArea = All;
                 Image = ChartOfAccounts;
-                RunObject = page "BeDyn Pleo Expense Type Map";
+                RunObject = page "BeDyn Pleo Category Map";
                 ToolTip = 'Abre la tabla de equivalencias entre la categoría de Pleo y la cuenta contable de gasto, el tratamiento CAPEX y la tarea de proyecto.';
             }
             action(PurchaserMapping)
@@ -160,7 +160,7 @@ page 82100 "BeDyn Pleo Setup"
             {
                 Caption = 'Mapeos';
                 actionref(VendorMapping_Promoted; VendorMapping) { }
-                actionref(ExpenseMap_Promoted; ExpenseMap) { }
+                actionref(CategoryMap_Promoted; CategoryMap) { }
                 actionref(PurchaserMapping_Promoted; PurchaserMapping) { }
             }
         }

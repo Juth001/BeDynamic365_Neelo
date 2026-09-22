@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Módulo** | Importación Pleo (app *Neelo Core Solutions by BeDynamic*; código en `src/` por tipo de objeto) |
-| **Rango de objetos** | 82100 – 82106 |
+| **Rango de objetos** | 82100 – 82107 |
 | **Namespace** | `BeDynamic.PleoImport` |
 | **Fecha del documento** | 15/07/2026 · actualizado 22/09/2026 |
 
@@ -83,7 +83,7 @@ Cada línea del CSV genera **un documento de una sola línea** (cantidad 1, cost
 
 **Mapeo de proveedores** (tabla 82102): código de proveedor de Pleo (columna *Proveedor - Code*) → proveedor BC. Si el código no está mapeado o no tiene proveedor asignado, se usa el **proveedor genérico** del setup (el nombre real del comercio se conserva en la descripción de la línea). Sin mapeo ni genérico → línea en error.
 
-**Mapeo de categorías** (tabla 82103): categoría de Pleo (columna *Category*, por **nombre exacto**) → destino contable. Desde el export de julio de 2026 el CSV de Pleo ya no incluye las columnas *Tipo Gasto - Name/Code* (campo personalizado) y la categoría estándar de Pleo asume su papel. Las líneas sin categoría (habitual en gastos personales) no pasan por el mapeo y van a la cuenta por defecto:
+**Mapeo de categorías** (tabla 82107): categoría de Pleo (columna *Category*, por **nombre exacto**) → destino contable. Desde el export de julio de 2026 el CSV de Pleo ya no incluye las columnas *Tipo Gasto - Name/Code* (campo personalizado) y la categoría estándar de Pleo asume su papel; la antigua tabla 82103 (mapeo por código de tipo de gasto) y su página quedan **obsoletas y ocultas**, sin borrar datos ni cambiar el esquema. Las líneas sin categoría (habitual en gastos personales) no pasan por el mapeo y van a la cuenta por defecto:
 
 - **No CAPEX** → cuenta de gasto. Si el mapeo no tiene cuenta, se usa la cuenta por defecto del setup; sin ninguna de las dos → error.
 - **CAPEX** → la línea va a un activo fijo (ver §2.5). El mapeo permite indicar además la **clase** y **subclase** de activo fijo que se aplican al buscar/crear el activo. Al elegir una subclase se rellena su clase automáticamente; una subclase de otra clase da error; al desmarcar CAPEX se limpian ambas.
@@ -170,17 +170,19 @@ Las líneas procesadas no se acumulan en la hoja de trabajo: se mueven a la tabl
 | Table | 82100 | BeDyn Pleo Setup | `src/Tables/BeDynPleoSetup.Table.al` |
 | Table | 82101 | BeDyn Pleo Import Buffer | `src/Tables/BeDynPleoImportBuffer.Table.al` |
 | Table | 82102 | BeDyn Pleo Vendor Mapping | `src/Tables/BeDynPleoVendorMapping.Table.al` |
-| Table | 82103 | BeDyn Pleo Expense Type Map | `src/Tables/BeDynPleoExpenseTypeMap.Table.al` |
+| Table | 82103 | BeDyn Pleo Expense Type Map (**obsoleta**: mapeo por código de tipo de gasto) | `src/Tables/BeDynPleoExpenseTypeMap.Table.al` |
 | Table | 82104 | BeDyn Pleo Purchaser Mapping | `src/Tables/BeDynPleoPurchaserMapping.Table.al` |
 | Table | 82105 | BeDyn Pleo Expense Archive | `src/Tables/BeDynPleoExpenseArchive.Table.al` |
 | Table | 82106 | BeDyn Pleo Posting Preview (temporal) | `src/Tables/BeDynPleoPostingPreview.Table.al` |
+| Table | 82107 | BeDyn Pleo Category Map | `src/Tables/BeDynPleoCategoryMap.Table.al` |
 | Page | 82100 | BeDyn Pleo Setup (Card) | `src/Pages/BeDynPleoSetup.Page.al` |
 | Page | 82101 | BeDyn Pleo Import Worksheet (List) | `src/Pages/BeDynPleoImportWorksheet.Page.al` |
 | Page | 82102 | BeDyn Pleo Vendor Mapping (List) | `src/Pages/BeDynPleoVendorMapping.Page.al` |
-| Page | 82103 | BeDyn Pleo Expense Type Map (List) | `src/Pages/BeDynPleoExpenseTypeMap.Page.al` |
+| Page | 82103 | BeDyn Pleo Expense Type Map (List, **obsoleta y oculta**) | `src/Pages/BeDynPleoExpenseTypeMap.Page.al` |
 | Page | 82104 | BeDyn Pleo Purchaser Mapping (List) | `src/Pages/BeDynPleoPurchaserMapping.Page.al` |
 | Page | 82105 | BeDyn Pleo Expense Archive (List, History) | `src/Pages/BeDynPleoExpenseArchive.Page.al` |
 | Page | 82106 | BeDyn Pleo Posting Preview (List, modal) | `src/Pages/BeDynPleoPostingPreview.Page.al` |
+| Page | 82107 | BeDyn Pleo Category Map (List) | `src/Pages/BeDynPleoCategoryMap.Page.al` |
 | Codeunit | 82100 | BeDyn Pleo CSV Reader | `src/Codeunits/BeDynPleoCSVReader.Codeunit.al` |
 | Codeunit | 82101 | BeDyn Pleo Validation | `src/Codeunits/BeDynPleoValidation.Codeunit.al` |
 | Codeunit | 82102 | BeDyn Pleo Import Process | `src/Codeunits/BeDynPleoImportProcess.Codeunit.al` |
@@ -198,7 +200,7 @@ flowchart TB
     subgraph UI
         WS[Page 82101<br/>Import Worksheet]
         ST[Page 82100 Setup]
-        MAP[Pages 82102/82103<br/>Mapeos]
+        MAP[Pages 82102/82104/82107<br/>Mapeos]
     end
     subgraph Lógica
         RD[CU 82100 CSV Reader<br/>parseo + dedup]
@@ -259,7 +261,7 @@ Esto evita el error de runtime "Se encontraron datos no válidos en la secuencia
 Bloques de campos:
 
 - **Identificación**: `Entry No.` (AutoIncrement, PK), `Batch Code`, `Row No.`.
-- **Datos crudos del CSV** (10–35): fecha, recibo, tipo, importe (con signo original), divisa, comercio, categoría, empleado, nota, equipo, Expense ID, URL recibo, proyecto (código/nombre), proveedor Pleo (código/nombre).
+- **Datos crudos del CSV** (10–35): fecha, recibo, tipo, importe (con signo original), divisa, comercio, categoría, empleado, nota, equipo, Expense ID, URL recibo, proyecto (código/nombre), proveedor Pleo (código/nombre). Los campos 32–33 (código/nombre del tipo de gasto) quedan obsoletos: el export ya no los trae.
 - **Resolución** (40–45): `Mapped Vendor No.`, `G/L Account No.`, `CAPEX`, `Fixed Asset No.`, `Purchaser Code`, `Extraordinary` (gasto extraordinario). Editables en la hoja para correcciones manuales antes de procesar (salvo los flags, que son de solo lectura).
 - **Estado/resultado** (50–62): `Status`, `Error Message`, `Warning Message` (aviso no bloqueante), `Created Document No.`, `Posted Document No.`, `Payment Posted`.
 
@@ -318,7 +320,7 @@ Detalles de implementación:
 
 ### 3.8 Permisos
 
-PermissionSet 82100 **"Importación Pleo"** (asignable): RIMD sobre las 7 tablas del módulo y ejecución de codeunits y páginas. El usuario necesita además los permisos estándar de compras/registro (P&L, diarios, activos fijos) que correspondan a su rol.
+PermissionSet 82100 **"Importación Pleo"** (asignable): RIMD sobre las 8 tablas del módulo y ejecución de codeunits y páginas. El usuario necesita además los permisos estándar de compras/registro (P&L, diarios, activos fijos) que correspondan a su rol.
 
 ### 3.9 Puntos de extensión y consideraciones
 
