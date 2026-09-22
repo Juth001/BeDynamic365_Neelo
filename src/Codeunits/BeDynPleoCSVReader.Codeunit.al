@@ -25,8 +25,6 @@ codeunit 82100 "BeDyn Pleo CSV Reader"
         ColExpenseId: Integer;
         ColProjectName: Integer;
         ColProjectCode: Integer;
-        ColCostTypeName: Integer;
-        ColCostTypeCode: Integer;
         ColVendorName: Integer;
         ColVendorCode: Integer;
 
@@ -166,8 +164,6 @@ codeunit 82100 "BeDyn Pleo CSV Reader"
         Buffer."Receipt URL" := CopyStr(FirstUrl(GetField(LineFields, ColReceiptUrls)), 1, 250);
         Buffer."Project Code" := CopyStr(GetField(LineFields, ColProjectCode), 1, 20);
         Buffer."Project Name" := CopyStr(GetField(LineFields, ColProjectName), 1, 100);
-        Buffer."Cost Type Code" := CopyStr(GetField(LineFields, ColCostTypeCode), 1, 20);
-        Buffer."Cost Type Name" := CopyStr(GetField(LineFields, ColCostTypeName), 1, 100);
         Buffer."Pleo Vendor Code" := CopyStr(GetField(LineFields, ColVendorCode), 1, 20);
         Buffer."Pleo Vendor Name" := CopyStr(GetField(LineFields, ColVendorName), 1, 100);
         Buffer.Status := Buffer.Status::Pending;
@@ -211,10 +207,6 @@ codeunit 82100 "BeDyn Pleo CSV Reader"
                     ColProjectName := i;
                 'PROYECTO-CODE':
                     ColProjectCode := i;
-                'TIPOGASTO-NAME':
-                    ColCostTypeName := i;
-                'TIPOGASTO-CODE':
-                    ColCostTypeCode := i;
                 'PROVEEDOR-NAME':
                     ColVendorName := i;
                 'PROVEEDOR-CODE':

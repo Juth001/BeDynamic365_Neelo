@@ -69,7 +69,7 @@ table 82105 "BeDyn Pleo Expense Archive"
         field(16; Category; Text[100])
         {
             Caption = 'Categoría Pleo';
-            ToolTip = 'Categoría del gasto en Pleo (informativa).';
+            ToolTip = 'Categoría del gasto en Pleo. Determinó la cuenta de gasto, el tratamiento CAPEX y la tarea de proyecto mediante el mapeo de categorías.';
         }
         field(17; Owner; Text[100])
         {
@@ -105,16 +105,6 @@ table 82105 "BeDyn Pleo Expense Archive"
         {
             Caption = 'Proyecto (Pleo)';
             ToolTip = 'Nombre del proyecto (propiedad) de Pleo.';
-        }
-        field(32; "Cost Type Code"; Code[20])
-        {
-            Caption = 'Cód. tipo gasto (Pleo)';
-            ToolTip = 'Código del tipo de gasto de Pleo.';
-        }
-        field(33; "Cost Type Name"; Text[100])
-        {
-            Caption = 'Tipo gasto (Pleo)';
-            ToolTip = 'Nombre del tipo de gasto de Pleo.';
         }
         field(34; "Pleo Vendor Code"; Code[20])
         {

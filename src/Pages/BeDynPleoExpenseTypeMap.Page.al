@@ -2,7 +2,7 @@ namespace BeDynamic.PleoImport;
 
 page 82103 "BeDyn Pleo Expense Type Map"
 {
-    Caption = 'Mapeo Tipos de Gasto Pleo';
+    Caption = 'Mapeo Categorías Pleo';
     PageType = List;
     SourceTable = "BeDyn Pleo Expense Type Map";
     UsageCategory = Administration;
@@ -14,11 +14,7 @@ page 82103 "BeDyn Pleo Expense Type Map"
         {
             repeater(Lines)
             {
-                field("Pleo Code"; Rec."Pleo Code")
-                {
-                    ApplicationArea = All;
-                }
-                field("Pleo Name"; Rec."Pleo Name")
+                field("Pleo Category"; Rec."Pleo Category")
                 {
                     ApplicationArea = All;
                 }

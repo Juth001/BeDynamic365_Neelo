@@ -96,14 +96,7 @@ page 82101 "BeDyn Pleo Import Worksheet"
                     Editable = false;
                     StyleExpr = StatusStyle;
                 }
-                field("Cost Type Code"; Rec."Cost Type Code")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                    Visible = false;
-                    StyleExpr = StatusStyle;
-                }
-                field("Cost Type Name"; Rec."Cost Type Name")
+                field(Category; Rec.Category)
                 {
                     ApplicationArea = All;
                     Editable = false;
@@ -377,11 +370,11 @@ page 82101 "BeDyn Pleo Import Worksheet"
             }
             action(ExpenseMap)
             {
-                Caption = 'Mapeo tipos de gasto';
+                Caption = 'Mapeo categorías';
                 ApplicationArea = All;
                 Image = ChartOfAccounts;
                 RunObject = page "BeDyn Pleo Expense Type Map";
-                ToolTip = 'Abre el mapeo de tipos de gasto de Pleo a cuentas contables.';
+                ToolTip = 'Abre el mapeo de categorías de Pleo a cuentas contables, tratamiento CAPEX y tareas de proyecto.';
             }
             action(PurchaserMapping)
             {
@@ -462,7 +455,7 @@ page 82101 "BeDyn Pleo Import Worksheet"
         UploadTitleLbl: Label 'Selecciona el CSV exportado de Pleo';
         FilterLbl: Label 'Ficheros CSV (*.csv)|*.csv', Locked = true;
         DoneMsg: Label 'Lote %1: %2 líneas importadas, %3 duplicadas omitidas.', Comment = '%1 = lote, %2, %3 = contadores';
-        NewMappingsMsg: Label 'Se han creado %1 mapeos nuevos (proveedores, compradores o tipos de gasto). Revísalos y complétalos, y usa Revalidar antes de procesar, para asegurar que los movimientos se contabilicen correctamente.', Comment = '%1 = contador';
+        NewMappingsMsg: Label 'Se han creado %1 mapeos nuevos (proveedores, compradores o categorías). Revísalos y complétalos, y usa Revalidar antes de procesar, para asegurar que los movimientos se contabilicen correctamente.', Comment = '%1 = contador';
     begin
         if not UploadIntoStream(UploadTitleLbl, '', FilterLbl, FileName, InStr) then
             exit;

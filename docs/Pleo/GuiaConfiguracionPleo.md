@@ -2,7 +2,7 @@
 
 > Guía operativa: qué configurar, qué implica cada opción, cómo se importa y valida el CSV y qué reglas de negocio aplica el procesado. El detalle técnico está en [DiseñoImportacionPleo.md](DiseñoImportacionPleo.md).
 >
-> Fecha: 15/07/2026
+> Fecha: 15/07/2026 · actualizado 22/09/2026
 
 ---
 
@@ -22,9 +22,9 @@
 | Campo | Qué es | Implicaciones |
 |---|---|---|
 | **Proveedor genérico** | Fallback de proveedor | Se usa cuando el proveedor de Pleo no está mapeado o el mapeo está incompleto. El nombre real del comercio se conserva en la descripción de la línea. **Si está vacío y falta un mapeo → la línea queda en error** |
-| **Cuenta de gasto por defecto** | Fallback de cuenta | Se usa cuando el tipo de gasto de Pleo no está mapeado. Si está vacía y falta el mapeo → error |
+| **Cuenta de gasto por defecto** | Fallback de cuenta | Se usa cuando la categoría de Pleo no está mapeada, no tiene cuenta asignada o viene vacía. Si está vacía y falta el mapeo → error |
 | **Grupo IVA producto (único)** | Grupo de IVA forzado en TODAS las líneas de compra | Los importes de Pleo vienen **con IVA incluido**; BC calcula la base hacia atrás con este grupo. **Obligatorio** para compras normales (los gastos extraordinarios no lo necesitan). Debe existir la combinación en la configuración de registro de IVA de los proveedores usados |
-| **Auto-crear mapeo de proveedores / tipos de gasto / compradores** | Alta automática de códigos desconocidos | Los códigos/empleados nuevos del CSV se dan de alta solos en las tablas de mapeo, **sin destino**, para completarlos después y revalidar. Si se desactivan, los desconocidos simplemente usan el fallback (o dan error) sin dejar rastro en el mapeo |
+| **Auto-crear mapeo de proveedores / categorías / compradores** | Alta automática de códigos, categorías y empleados desconocidos | Los códigos, categorías y empleados nuevos del CSV se dan de alta solos en las tablas de mapeo, **sin destino**, para completarlos después y revalidar. Si se desactivan, los desconocidos simplemente usan el fallback (o dan error) sin dejar rastro en el mapeo |
 | **Cuenta gastos extraordinarios** | Cuenta de los gastos no deducibles sin justificante | Destino del diario directo banco Pleo → gasto (sin IVA, sin factura). **Obligatoria si hay empleados marcados "No deducible"**; debe permitir registro directo |
 
 ### 1.3 Grupo CAPEX / Activos fijos
@@ -32,7 +32,7 @@
 | Campo | Qué es | Implicaciones |
 |---|---|---|
 | **Auto-crear activos fijos** | Alta automática del activo de la propiedad | Si no existe activo que cumpla ubicación (+ clase/subclase del mapeo), se crea con descripción = nombre de la propiedad. Si está desactivado y no existe → error |
-| **Subclase activo fijo** | Subclase por defecto | Solo se usa al crear activos cuando el mapeo del tipo de gasto **no** indica clase ni subclase |
+| **Subclase activo fijo** | Subclase por defecto | Solo se usa al crear activos cuando el mapeo de la categoría **no** indica clase ni subclase |
 | **Grupo contable activo fijo** | Grupo del libro de amortización | Si está vacío, se toma el grupo por defecto de la subclase efectiva |
 | **Libro de amortización** | Libro para el activo y la línea de compra | Si está vacío, se usa el libro por defecto de la configuración de activos fijos de BC |
 
@@ -55,7 +55,7 @@
 | Mapeo | Clave | Destino | Notas |
 |---|---|---|---|
 | **Proveedores** | "Proveedor - Code" del CSV | Proveedor BC | Sin proveedor asignado → se usa el genérico |
-| **Tipos de gasto** | "TipoGasto - Code" del CSV | Cuenta de gasto **o** CAPEX + clase/subclase de activo | CAPEX ignora la cuenta; la clase/subclase determinan qué activo de la propiedad recibe el coste y con qué se crea. Al desmarcar CAPEX se limpian |
+| **Categorías** | "Category" del CSV (**nombre exacto** de la categoría de Pleo) | Cuenta de gasto **o** CAPEX + clase/subclase de activo, y tarea de proyecto | CAPEX ignora la cuenta; la clase/subclase determinan qué activo de la propiedad recibe el coste y con qué se crea. Al desmarcar CAPEX se limpian. Las líneas sin categoría van a la cuenta por defecto. ⚠️ Si se renombra una categoría en Pleo, aparecerá como categoría nueva |
 | **Compradores** | "Owner" del CSV (**nombre exacto** del empleado) | Comprador/Vendedor BC + check **"No deducible"** | El comprador se asigna a factura, pago y diario, con prioridad sobre el comprador por defecto del proveedor. "No deducible" activa el tratamiento de gasto extraordinario para los gastos **sin justificante** de ese empleado. ⚠️ Si el empleado cambia su nombre en Pleo, aparecerá como empleado nuevo |
 
 ### 1.7 Datos maestros necesarios fuera del módulo
@@ -87,7 +87,7 @@
 
 1. **Formato esperado**: export estándar de Pleo — separador `;`, decimal coma, fechas `dd/MM/yyyy`, campos entrecomillados (se soportan `;` y saltos de línea dentro de un campo, p. ej. en la nota).
 2. **Codificación**: se detecta automáticamente — BOM UTF-16 o UTF-8 manda; sin BOM se valida si el contenido es UTF-8 y, si no (típico CSV re-guardado por Excel en ANSI), se lee como Windows. La opción del setup solo desempata el caso sin BOM.
-3. **Cabecera por nombre**: las columnas se localizan por su título (Date, Receipt, Expense type, Amount, Currency, Source description, Owner, Note, Receipt URLs, Expense ID, Proyecto‑Name/Code, TipoGasto‑Name/Code, Proveedor‑Name/Code…), no por posición. Si no se encuentran "Date" y "Amount", se aborta con aviso.
+3. **Cabecera por nombre**: las columnas se localizan por su título (Date, Receipt, Expense type, Amount, Currency, Source description, Category, Owner, Note, Receipt URLs, Expense ID, Proyecto‑Name/Code, Proveedor‑Name/Code…), no por posición. Si no se encuentran "Date" y "Amount", se aborta con aviso.
 4. **Lote**: cada importación crea un lote `PL<añomesdíahoraminutoseg>`; la hoja se filtra automáticamente al lote recién importado.
 5. **Deduplicación**: cada gasto trae un **Expense ID** único. Si ya existe en la hoja de trabajo **o en el archivo**, la fila se descarta como duplicada. Se pueden re-exportar periodos solapados de Pleo sin riesgo de duplicar contabilidad.
 6. Las filas sin fecha ni importe (basura al final del fichero) se ignoran.
@@ -163,4 +163,4 @@ Acción "Generar documentos y pagos" — procesa solo las líneas **Validadas** 
 - Solo **EUR**.
 - Grupo de IVA **único** para todas las compras (Pleo no desglosa IVA).
 - Un documento por movimiento (no se agrupan compras del mismo proveedor).
-- El mapeo de compradores es por **nombre exacto** del empleado en Pleo.
+- Los mapeos de compradores y de categorías son por **nombre exacto** del empleado y de la categoría en Pleo.

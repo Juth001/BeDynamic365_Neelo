@@ -256,15 +256,19 @@ codeunit 82101 "BeDyn Pleo Validation"
     local procedure ResolveAccountOrFixedAsset(var Buffer: Record "BeDyn Pleo Import Buffer"): Text
     var
         ExpenseMap: Record "BeDyn Pleo Expense Type Map";
-        NoAccountErr: Label 'El tipo de gasto Pleo %1 (%2) no tiene cuenta asignada y no hay cuenta por defecto en la configuración.', Comment = '%1 = código Pleo, %2 = nombre Pleo';
+        NoAccountErr: Label 'La categoría Pleo "%1" no tiene cuenta asignada y no hay cuenta por defecto en la configuración.', Comment = '%1 = categoría Pleo';
+        NoCategoryErr: Label 'La línea no tiene categoría en Pleo y no hay cuenta por defecto en la configuración.';
     begin
         Buffer."G/L Account No." := '';
         Buffer."Fixed Asset No." := '';
         Buffer.CAPEX := false;
 
-        if Buffer."Cost Type Code" <> '' then
-            if ExpenseMap.Get(Buffer."Cost Type Code") then begin
-                // Tipo de gasto CAPEX: la línea va a un activo fijo determinado por la
+        // La categoría de Pleo (columna "Category") determina el destino contable
+        // mediante el mapeo de categorías. Sin categoría no hay mapeo posible y la
+        // línea va a la cuenta por defecto.
+        if Buffer.Category <> '' then
+            if ExpenseMap.Get(Buffer.Category) then begin
+                // Categoría CAPEX: la línea va a un activo fijo determinado por la
                 // propiedad (Proyecto de Pleo = ubicación del activo) y por la
                 // clase/subclase del mapeo, si se han indicado.
                 if ExpenseMap.CAPEX then begin
@@ -278,8 +282,7 @@ codeunit 82101 "BeDyn Pleo Validation"
             end else
                 if Setup."Auto Create Expense Map" then begin
                     ExpenseMap.Init();
-                    ExpenseMap."Pleo Code" := Buffer."Cost Type Code";
-                    ExpenseMap."Pleo Name" := Buffer."Cost Type Name";
+                    ExpenseMap."Pleo Category" := Buffer.Category;
                     ExpenseMap.Insert(true);
                 end;
 
@@ -288,7 +291,9 @@ codeunit 82101 "BeDyn Pleo Validation"
             exit('');
         end;
 
-        exit(StrSubstNo(NoAccountErr, Buffer."Cost Type Code", Buffer."Cost Type Name"));
+        if Buffer.Category = '' then
+            exit(NoCategoryErr);
+        exit(StrSubstNo(NoAccountErr, Buffer.Category));
     end;
 
     local procedure ResolveFixedAsset(var Buffer: Record "BeDyn Pleo Import Buffer"; ExpenseMap: Record "BeDyn Pleo Expense Type Map"): Text
@@ -389,7 +394,7 @@ codeunit 82101 "BeDyn Pleo Validation"
         if DescText = '' then
             DescText := Buffer."Project Code";
 
-        // Clase/subclase del mapeo del tipo de gasto; la subclase del setup solo
+        // Clase/subclase del mapeo de la categoría; la subclase del setup solo
         // aplica si el mapeo no indica nada (comportamiento anterior).
         ClassCode := ExpenseMap."FA Class Code";
         SubclassCode := ExpenseMap."FA Subclass Code";
@@ -431,9 +436,9 @@ codeunit 82101 "BeDyn Pleo Validation"
     end;
 
     // Imputación a proyecto: si la propiedad (Proyecto de Pleo) tiene un proyecto
-    // BC con su mismo código (los crea el asistente de propiedades) y el mapeo del
-    // tipo de gasto indica una tarea, el gasto se repercutirá a esa tarea del
-    // proyecto. Sin proyecto BC o sin tarea en el mapeo, la línea va sin
+    // BC con su mismo código (los crea el asistente de propiedades) y el mapeo de
+    // la categoría de Pleo indica una tarea, el gasto se repercutirá a esa tarea
+    // del proyecto. Sin proyecto BC o sin tarea en el mapeo, la línea va sin
     // imputación (no es error). Las líneas CAPEX van a activo fijo y no admiten
     // proyecto en la línea de compra.
     local procedure ResolveJobTask(var Buffer: Record "BeDyn Pleo Import Buffer"): Text
@@ -441,8 +446,8 @@ codeunit 82101 "BeDyn Pleo Validation"
         Job: Record Job;
         JobTask: Record "Job Task";
         ExpenseMap: Record "BeDyn Pleo Expense Type Map";
-        BlockedErr: Label 'El proyecto %1 de la propiedad está bloqueado o no está abierto: desbloquéalo o quita la tarea del mapeo del tipo de gasto.', Comment = '%1 = proyecto';
-        NoTaskErr: Label 'El proyecto %1 no tiene la tarea %2 (asignada al tipo de gasto %3 en el mapeo): créala en el proyecto o quita la tarea del mapeo.', Comment = '%1 = proyecto, %2 = tarea, %3 = tipo de gasto';
+        BlockedErr: Label 'El proyecto %1 de la propiedad está bloqueado o no está abierto: desbloquéalo o quita la tarea del mapeo de la categoría.', Comment = '%1 = proyecto';
+        NoTaskErr: Label 'El proyecto %1 no tiene la tarea %2 (asignada a la categoría "%3" en el mapeo): créala en el proyecto o quita la tarea del mapeo.', Comment = '%1 = proyecto, %2 = tarea, %3 = categoría Pleo';
         NotPostingErr: Label 'La tarea %1 del proyecto %2 no es de tipo Registro: no admite imputación de gastos.', Comment = '%1 = tarea, %2 = proyecto';
     begin
         Buffer."Job No." := '';
@@ -450,9 +455,9 @@ codeunit 82101 "BeDyn Pleo Validation"
 
         if Buffer.CAPEX then
             exit('');
-        if (Buffer."Project Code" = '') or (Buffer."Cost Type Code" = '') then
+        if (Buffer."Project Code" = '') or (Buffer.Category = '') then
             exit('');
-        if not ExpenseMap.Get(Buffer."Cost Type Code") then
+        if not ExpenseMap.Get(Buffer.Category) then
             exit('');
         if ExpenseMap."Job Task No." = '' then
             exit('');
@@ -461,7 +466,7 @@ codeunit 82101 "BeDyn Pleo Validation"
         if (Job.Blocked <> Job.Blocked::" ") or (Job.Status <> Job.Status::Open) then
             exit(StrSubstNo(BlockedErr, Job."No."));
         if not JobTask.Get(Job."No.", ExpenseMap."Job Task No.") then
-            exit(StrSubstNo(NoTaskErr, Job."No.", ExpenseMap."Job Task No.", Buffer."Cost Type Code"));
+            exit(StrSubstNo(NoTaskErr, Job."No.", ExpenseMap."Job Task No.", Buffer.Category));
         if JobTask."Job Task Type" <> JobTask."Job Task Type"::Posting then
             exit(StrSubstNo(NotPostingErr, JobTask."Job Task No.", Job."No."));
 

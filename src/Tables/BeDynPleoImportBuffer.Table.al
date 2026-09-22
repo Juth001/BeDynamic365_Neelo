@@ -65,7 +65,7 @@ table 82101 "BeDyn Pleo Import Buffer"
         field(16; Category; Text[100])
         {
             Caption = 'Categoría Pleo';
-            ToolTip = 'Categoría del gasto en Pleo (informativa).';
+            ToolTip = 'Categoría del gasto en Pleo. Determina la cuenta de gasto, el tratamiento CAPEX y la tarea de proyecto mediante el mapeo de categorías.';
         }
         field(17; Owner; Text[100])
         {
@@ -102,16 +102,6 @@ table 82101 "BeDyn Pleo Import Buffer"
             Caption = 'Proyecto (Pleo)';
             ToolTip = 'Nombre del proyecto (propiedad) de Pleo.';
         }
-        field(32; "Cost Type Code"; Code[20])
-        {
-            Caption = 'Cód. tipo gasto (Pleo)';
-            ToolTip = 'Código del tipo de gasto de Pleo. Determina la cuenta o el tratamiento CAPEX mediante el mapeo de tipos de gasto.';
-        }
-        field(33; "Cost Type Name"; Text[100])
-        {
-            Caption = 'Tipo gasto (Pleo)';
-            ToolTip = 'Nombre del tipo de gasto de Pleo.';
-        }
         field(34; "Pleo Vendor Code"; Code[20])
         {
             Caption = 'Cód. proveedor (Pleo)';
@@ -139,7 +129,7 @@ table 82101 "BeDyn Pleo Import Buffer"
         field(42; CAPEX; Boolean)
         {
             Caption = 'CAPEX';
-            ToolTip = 'Indica que el tipo de gasto está marcado como CAPEX: la línea se contabiliza como adquisición de activo fijo en vez de gasto.';
+            ToolTip = 'Indica que la categoría de Pleo está marcada como CAPEX: la línea se contabiliza como adquisición de activo fijo en vez de gasto.';
         }
         field(43; "Fixed Asset No."; Code[20])
         {
@@ -163,7 +153,7 @@ table 82101 "BeDyn Pleo Import Buffer"
         {
             Caption = 'Tarea proyecto';
             TableRelation = "Job Task"."Job Task No." where("Job No." = field("Job No."));
-            ToolTip = 'Tarea del proyecto a la que se imputará el gasto, según el mapeo del tipo de gasto. Se puede corregir a mano antes de procesar.';
+            ToolTip = 'Tarea del proyecto a la que se imputará el gasto, según el mapeo de la categoría de Pleo. Se puede corregir a mano antes de procesar.';
         }
         field(45; Extraordinary; Boolean)
         {

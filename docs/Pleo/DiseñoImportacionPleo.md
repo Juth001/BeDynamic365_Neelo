@@ -5,7 +5,7 @@
 | **Módulo** | Importación Pleo (app *Neelo Core Solutions by BeDynamic*; código en `src/` por tipo de objeto) |
 | **Rango de objetos** | 82100 – 82106 |
 | **Namespace** | `BeDynamic.PleoImport` |
-| **Fecha del documento** | 15/07/2026 · actualizado 26/07/2026 |
+| **Fecha del documento** | 15/07/2026 · actualizado 22/09/2026 |
 
 ---
 
@@ -66,12 +66,12 @@ Cada línea del CSV genera **un documento de una sola línea** (cantidad 1, cost
 | General | Prefijo nº factura proveedor | Se antepone al nº de recibo para formar el "Nº factura proveedor" (p. ej. `PLEO-2601217`) |
 | General | Codificación del fichero | Solo desempate cuando el CSV no lleva BOM (ver §3.3) |
 | Compras | Proveedor genérico | Fallback cuando el proveedor Pleo no está mapeado |
-| Compras | Cuenta de gasto por defecto | Fallback cuando el tipo de gasto no está mapeado |
+| Compras | Cuenta de gasto por defecto | Fallback cuando la categoría de Pleo no está mapeada, no tiene cuenta asignada o viene vacía |
 | Compras | Grupo IVA producto (único) | Se fuerza en **todas** las líneas importadas. Obligatorio para compras |
-| Compras | Auto-crear mapeo de proveedores / de tipos de gasto / de compradores | Da de alta automáticamente los códigos y empleados Pleo desconocidos en las tablas de mapeo (sin destino) para completarlos después |
+| Compras | Auto-crear mapeo de proveedores / de categorías / de compradores | Da de alta automáticamente los códigos de proveedor, las categorías y los empleados Pleo desconocidos en las tablas de mapeo (sin destino) para completarlos después |
 | Compras | Cuenta gastos extraordinarios | Cuenta a la que van los gastos de empleados "No deducible" sin justificante (diario directo contra banco Pleo, sin IVA) |
 | CAPEX | Auto-crear activos fijos | Crea el activo si no existe ninguno que cumpla los criterios (ver §2.5) |
-| CAPEX | Subclase activo fijo | Subclase **por defecto** al crear activos, cuando el mapeo del tipo de gasto no indica clase ni subclase |
+| CAPEX | Subclase activo fijo | Subclase **por defecto** al crear activos, cuando el mapeo de la categoría no indica clase ni subclase |
 | CAPEX | Grupo contable activo fijo | Grupo del libro de amortización de los activos creados; si vacío, se toma el grupo por defecto de la subclase efectiva |
 | CAPEX | Libro de amortización | Para el activo creado y para la línea de compra CAPEX; si vacío, el libro por defecto de la config. de activos fijos de BC |
 | Dimensiones | Dimensión para el proyecto | Dimensión BC donde se vuelca el "Proyecto - Code" de Pleo |
@@ -83,18 +83,18 @@ Cada línea del CSV genera **un documento de una sola línea** (cantidad 1, cost
 
 **Mapeo de proveedores** (tabla 82102): código de proveedor de Pleo (columna *Proveedor - Code*) → proveedor BC. Si el código no está mapeado o no tiene proveedor asignado, se usa el **proveedor genérico** del setup (el nombre real del comercio se conserva en la descripción de la línea). Sin mapeo ni genérico → línea en error.
 
-**Mapeo de tipos de gasto** (tabla 82103): código de tipo de gasto de Pleo (columna *TipoGasto - Code*) → destino contable:
+**Mapeo de categorías** (tabla 82103): categoría de Pleo (columna *Category*, por **nombre exacto**) → destino contable. Desde el export de julio de 2026 el CSV de Pleo ya no incluye las columnas *Tipo Gasto - Name/Code* (campo personalizado) y la categoría estándar de Pleo asume su papel. Las líneas sin categoría (habitual en gastos personales) no pasan por el mapeo y van a la cuenta por defecto:
 
 - **No CAPEX** → cuenta de gasto. Si el mapeo no tiene cuenta, se usa la cuenta por defecto del setup; sin ninguna de las dos → error.
 - **CAPEX** → la línea va a un activo fijo (ver §2.5). El mapeo permite indicar además la **clase** y **subclase** de activo fijo que se aplican al buscar/crear el activo. Al elegir una subclase se rellena su clase automáticamente; una subclase de otra clase da error; al desmarcar CAPEX se limpian ambas.
 
-El mapeo incluye además la **tarea de proyecto** (opcional): si la propiedad del gasto (Proyecto de Pleo) tiene un **proyecto BC con su mismo código** (los crea el asistente de creación de propiedades) y el tipo de gasto indica tarea, la validación resuelve proyecto y tarea en el buffer (columnas "Proyecto BC" y "Tarea proyecto" de la hoja, corregibles a mano) y la línea de la factura se **imputa a esa tarea** ("Job No."/"Job Task No." en la línea de compra, que al registrar genera el movimiento de proyecto). Sin proyecto BC o sin tarea en el mapeo, la línea va sin imputación (no es error); si el proyecto existe pero está bloqueado, no está abierto o le falta la tarea, la línea queda en **error** de validación. Las líneas CAPEX (activo fijo) y los gastos extraordinarios no se imputan a proyecto.
+El mapeo incluye además la **tarea de proyecto** (opcional): si la propiedad del gasto (Proyecto de Pleo) tiene un **proyecto BC con su mismo código** (los crea el asistente de creación de propiedades) y la categoría indica tarea, la validación resuelve proyecto y tarea en el buffer (columnas "Proyecto BC" y "Tarea proyecto" de la hoja, corregibles a mano) y la línea de la factura se **imputa a esa tarea** ("Job No."/"Job Task No." en la línea de compra, que al registrar genera el movimiento de proyecto). Sin proyecto BC o sin tarea en el mapeo, la línea va sin imputación (no es error); si el proyecto existe pero está bloqueado, no está abierto o le falta la tarea, la línea queda en **error** de validación. Las líneas CAPEX (activo fijo) y los gastos extraordinarios no se imputan a proyecto.
 
 **Mapeo de compradores** (tabla 82104): empleado de Pleo (columna *Owner*, por nombre exacto) → comprador/vendedor BC. El comprador resuelto se asigna como "Comprador" en la cabecera de la factura/abono, con prioridad sobre el comprador por defecto del proveedor. Es **opcional**: un empleado sin mapear no genera error, la factura simplemente se crea sin comprador (o con el del proveedor).
 
 El mapeo incluye además el check **"No deducible"**: los gastos de ese empleado que vengan **sin justificante** (sin URL de recibo) se tratan como **gasto extraordinario** — diario directo del banco Pleo a la cuenta de gastos extraordinarios del setup, sin IVA, sin proveedor y sin factura. **Excepción**: si el gasto trae justificante, se contabiliza de forma normal aunque el empleado esté marcado. El diario extraordinario conserva la dimensión de proyecto y el comprador.
 
-Con las opciones de auto-creación activas, los códigos y empleados desconocidos se dan de alta solos en estas tablas (sin destino). En proveedores y tipos de gasto la línea queda en error hasta completar el mapeo y revalidar; en compradores no, por ser opcional.
+Con las opciones de auto-creación activas, los códigos de proveedor, las categorías y los empleados desconocidos se dan de alta solos en estas tablas (sin destino). En proveedores y categorías la línea queda en error hasta completar el mapeo y revalidar (salvo que el setup tenga proveedor genérico o cuenta por defecto, que actúan de fallback); en compradores no, por ser opcional.
 
 ### 2.5 CAPEX y activos fijos
 
@@ -104,7 +104,7 @@ Resolución del activo para una línea CAPEX:
 
 1. La línea debe tener proyecto; si no → error.
 2. Se calcula el código de ubicación: la *FA Location* es `Code[10]`, así que si el código de propiedad no cabe se **compacta quitando separadores** (`ES-01-02-024` → `ES0102024`); si ni compactado cabe → error de validación (nunca se trunca, para que dos propiedades no compartan activo). Se garantiza que existe la *FA Location* con ese código (se crea con el nombre de la propiedad si falta).
-3. Se busca un activo **no bloqueado ni inactivo** con esa ubicación. Si el mapeo del tipo de gasto indica clase y/o subclase, el activo debe coincidir también con ellas — así una misma propiedad puede tener activos distintos por tipo de CAPEX (p. ej. obra vs mobiliario).
+3. Se busca un activo **no bloqueado ni inactivo** con esa ubicación. Si el mapeo de la categoría indica clase y/o subclase, el activo debe coincidir también con ellas — así una misma propiedad puede tener activos distintos por tipo de CAPEX (p. ej. obra vs mobiliario).
 4. Si no existe y "Auto-crear activos fijos" está activo, se crea: descripción = nombre de la propiedad, ubicación = código de la propiedad, clase/subclase del mapeo (o subclase del setup si el mapeo no indica nada), y su libro de amortización con fecha de inicio = fecha del gasto y grupo contable resuelto (setup → subclase). Si la auto-creación está desactivada → error.
 
 La línea de compra resultante es de tipo *Activo fijo*, con *FA Posting Type* = Coste de adquisición y el libro de amortización del setup si está informado.
@@ -235,17 +235,16 @@ flowchart TB
 | `AMOUNT` | Amount |
 | `CURRENCY` | Currency Code |
 | `SOURCEDESCRIPTION` | Source Description (comercio) |
-| `CATEGORY` | Category |
+| `CATEGORY` | Category (clave del mapeo de categorías: cuenta de gasto, CAPEX y tarea de proyecto) |
 | `OWNER` | Owner (empleado; se usa para resolver el comprador vía mapeo) |
 | `NOTE` | Note (se aplanan los saltos de línea) |
 | `TEAM` | Team |
 | `RECEIPTURLS` | Receipt URL (solo la primera URL de la lista separada por comas) |
 | `EXPENSEID` | Expense ID (clave de deduplicación) |
 | `PROYECTO-NAME` / `PROYECTO-CODE` | Project Name / Project Code |
-| `TIPOGASTO-NAME` / `TIPOGASTO-CODE` | Cost Type Name / Cost Type Code |
 | `PROVEEDOR-NAME` / `PROVEEDOR-CODE` | Pleo Vendor Name / Pleo Vendor Code |
 
-Si tras leer la cabecera no se han resuelto `DATE` y `AMOUNT`, se aborta con error explicativo. Las filas sin fecha ni importe se ignoran (basura al final del fichero).
+Las columnas del export no listadas (Net Amount, Tax Code, Review Status, Reviewer, Linked Invoice Numbers…) se ignoran. Si tras leer la cabecera no se han resuelto `DATE` y `AMOUNT`, se aborta con error explicativo. Las filas sin fecha ni importe se ignoran (basura al final del fichero).
 
 **Codificación — detección automática** (`DetectEncoding`):
 
@@ -260,7 +259,7 @@ Esto evita el error de runtime "Se encontraron datos no válidos en la secuencia
 Bloques de campos:
 
 - **Identificación**: `Entry No.` (AutoIncrement, PK), `Batch Code`, `Row No.`.
-- **Datos crudos del CSV** (10–35): fecha, recibo, tipo, importe (con signo original), divisa, comercio, categoría, empleado, nota, equipo, Expense ID, URL recibo, proyecto (código/nombre), tipo de gasto (código/nombre), proveedor Pleo (código/nombre).
+- **Datos crudos del CSV** (10–35): fecha, recibo, tipo, importe (con signo original), divisa, comercio, categoría, empleado, nota, equipo, Expense ID, URL recibo, proyecto (código/nombre), proveedor Pleo (código/nombre).
 - **Resolución** (40–45): `Mapped Vendor No.`, `G/L Account No.`, `CAPEX`, `Fixed Asset No.`, `Purchaser Code`, `Extraordinary` (gasto extraordinario). Editables en la hoja para correcciones manuales antes de procesar (salvo los flags, que son de solo lectura).
 - **Estado/resultado** (50–62): `Status`, `Error Message`, `Warning Message` (aviso no bloqueante), `Created Document No.`, `Posted Document No.`, `Payment Posted`.
 
@@ -326,4 +325,4 @@ PermissionSet 82100 **"Importación Pleo"** (asignable): RIMD sobre las 7 tablas
 - Los tres enums son extensibles (nuevos tipos de movimiento, estados o acciones).
 - El módulo no usa eventos propios; ampliaciones futuras razonables: publicar eventos `OnBeforeCreateDocument` / `OnAfterCreateFixedAsset`, soporte multidivisa, agrupación de líneas por proveedor+fecha.
 - El staging se purga solo (las líneas procesadas pasan al archivo); el archivo sí crece indefinidamente — si con los años el volumen molesta, valorar una purga por antigüedad (con cuidado: se perdería la deduplicación de esos Expense ID).
-- El campo `Category` y `Team` del CSV se almacenan pero hoy no intervienen en la contabilización.
+- El campo `Team` del CSV se almacena pero hoy no interviene en la contabilización.

@@ -73,7 +73,7 @@ page 82105 "BeDyn Pleo Expense Archive"
                 {
                     ApplicationArea = All;
                 }
-                field("Cost Type Name"; Rec."Cost Type Name")
+                field(Category; Rec.Category)
                 {
                     ApplicationArea = All;
                 }

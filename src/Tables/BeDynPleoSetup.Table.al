@@ -59,7 +59,7 @@ table 82100 "BeDyn Pleo Setup"
         {
             Caption = 'Cuenta de gasto por defecto';
             TableRelation = "G/L Account"."No." where("Direct Posting" = const(true), "Account Type" = const(Posting));
-            ToolTip = 'Cuenta contable usada cuando el "Tipo Gasto" de Pleo no está mapeado o viene vacío.';
+            ToolTip = 'Cuenta contable usada cuando la categoría de Pleo no está mapeada, no tiene cuenta asignada o viene vacía.';
         }
         field(22; "Auto Create Vendor Mapping"; Boolean)
         {
@@ -69,9 +69,9 @@ table 82100 "BeDyn Pleo Setup"
         }
         field(23; "Auto Create Expense Map"; Boolean)
         {
-            Caption = 'Auto-crear mapeo de tipos de gasto';
+            Caption = 'Auto-crear mapeo de categorías';
             InitValue = true;
-            ToolTip = 'Si está activo, los códigos de tipo de gasto de Pleo desconocidos se dan de alta automáticamente en la tabla de mapeo (sin cuenta) para completarlos después.';
+            ToolTip = 'Si está activo, las categorías de Pleo desconocidas se dan de alta automáticamente en la tabla de mapeo (sin cuenta) para completarlas después.';
         }
         field(25; "Auto Create Purchaser Mapping"; Boolean)
         {
@@ -123,7 +123,7 @@ table 82100 "BeDyn Pleo Setup"
         {
             Caption = 'Subclase activo fijo';
             TableRelation = "FA Subclass";
-            ToolTip = 'Subclase por defecto para los activos fijos creados automáticamente, cuando el mapeo del tipo de gasto no indica clase ni subclase (opcional).';
+            ToolTip = 'Subclase por defecto para los activos fijos creados automáticamente, cuando el mapeo de la categoría no indica clase ni subclase (opcional).';
         }
         field(72; "FA Posting Group"; Code[20])
         {

@@ -139,11 +139,11 @@ page 82100 "BeDyn Pleo Setup"
             }
             action(ExpenseMap)
             {
-                Caption = 'Mapeo tipos de gasto Pleo';
+                Caption = 'Mapeo categorías Pleo';
                 ApplicationArea = All;
                 Image = ChartOfAccounts;
                 RunObject = page "BeDyn Pleo Expense Type Map";
-                ToolTip = 'Abre la tabla de equivalencias entre el "Tipo Gasto" de Pleo y la cuenta contable de gasto.';
+                ToolTip = 'Abre la tabla de equivalencias entre la categoría de Pleo y la cuenta contable de gasto, el tratamiento CAPEX y la tarea de proyecto.';
             }
             action(PurchaserMapping)
             {
