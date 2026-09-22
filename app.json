@@ -1,0 +1,33 @@
+{
+  "id": "7028a4de-0f6e-4052-8fbe-f71f048ad7a9",
+  "name": "Neelo Core Solutions by BeDynamic",
+  "publisher": "BeDynamic",
+  "version": "1.0.2.7",
+  "brief": "Soluciones core de negocio para Neelo",
+  "description": "Soluciones core de negocio para Neelo",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "27.0.0.0",
+  "idRanges": [
+    {
+      "from": 80000,
+      "to": 89999
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": false,
+    "allowDownloadingSource": false,
+    "includeSourceInSymbolFile": false
+  },
+  "runtime": "15.0",
+  "features": [
+    "NoImplicitWith",
+    "TranslationFile"
+  ]
+}

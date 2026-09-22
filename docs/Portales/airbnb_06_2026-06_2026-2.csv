@@ -1,0 +1,53 @@
+﻿Fecha,Fecha de llegada estimada,Tipo,Código de confirmación,Fecha de la reserva,Fecha de inicio,Fecha de finalización,Noches,Viajero,Alojamiento,Detalles,Código de referencia,Moneda,Importe,Cobrado,Comisión de servicio,Comisión por Pago rápido,Gastos de limpieza,Ingresos brutos,Impuestos liquidados por Airbnb,Año fiscal
+06/26/2026,07/03/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-O5OET3WW32OKAMBLAO25O2OXRJ6DZMZ6,EUR,,3817.37,,,,,,
+06/26/2026,,Reserva,HMJP29RXPH,05/11/2026,06/25/2026,06/28/2026,3,Ellie Bate,Fully Equipped Studio in Lavapiés,,,EUR,380.25,,"69,75",,50.00,450.00,0.00,2026
+06/26/2026,,Reserva,HMWJBYA2DA,06/05/2026,06/25/2026,07/08/2026,13,Elizabeth Preciado,Gran Piso señorial en Barrio Salamanca · 8 hab,,,EUR,3437.12,,"630,48",,80.00,4067.60,0.00,2026
+06/25/2026,07/02/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-GU3YEH55QA7WYNVEFP6345RJYP2PKLIN,EUR,,443.62,,,,,,
+06/25/2026,,Reserva,HMD4SDSPS8,04/12/2026,06/24/2026,06/27/2026,3,Emma Fagan,Victoria 9 - Apt 3,,,EUR,443.62,,"81,38",,55.00,525.00,0.00,2026
+06/24/2026,07/01/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-XMW27EPTFK7HQAFU3GDFVM3TL7237J4A,EUR,,2568.80,,,,,,
+06/24/2026,,Reserva,HMYP8DSBKB,06/16/2026,06/23/2026,06/27/2026,4,Rafiqul Islam,Modern 1BR apartment in Lavapiés,,,EUR,522.21,,"95,79",,60.00,618.00,0.00,2026
+06/24/2026,,Reserva,HMCJBX2DDA,06/17/2026,06/23/2026,06/28/2026,5,Joaquín Mostaza,Amplio apartamento cerca de Nuevos Ministerios,,,EUR,1243.84,,"228,16",,0.00,1472.00,0.00,2026
+06/24/2026,,Reserva,HMYKDSRSF4,06/23/2026,06/23/2026,07/01/2026,8,Daniel ,Estudio en Ponzano 23 · Chamberí gastronómico,,,EUR,802.75,,147.25,,55.00,950.00,0.00,2026
+06/24/2026,07/01/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-UM24UGDHW6PSMHEYN43H3JE6OEKDZH7Z,EUR,,99.66,,,,,,
+06/24/2026,,Ajuste de la resolución,HMPC55BQYF,,06/15/2026,06/20/2026,5,Rael Kwasnik,Fully Equipped Studio in Lavapiés,Ajuste de la resolución 17821423048777,,EUR,-114.32,,,,,-114.32,,2026
+06/24/2026,,Reserva,HMKHDFHSJ4,06/22/2026,06/23/2026,06/24/2026,1,Guadalupe Saucedo,Gran piso señorial en Gran Vía · 9 hab ·,,,EUR,405.60,,"74,40",,0.00,480.00,0.00,2026
+06/24/2026,,Ajuste de la resolución,HMKHDFHSJ4,,06/23/2026,06/24/2026,1,Guadalupe Saucedo,Gran piso señorial en Gran Vía · 9 hab ·,Ajuste de la resolución 17822493991243,,EUR,-191.62,,,,,-191.62,,2026
+06/22/2026,06/29/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-JEB2BSOOAXBN3UFUNVEGDBORQO4WF7MH,EUR,,1693.38,,,,,,
+06/22/2026,,Reserva,HMFYN9Y2EB,06/12/2026,06/21/2026,06/27/2026,6,Nicolas Benavente,Agradable piso de 5 habitaciones,,,EUR,1693.38,,"310,62",,80.00,2004.00,0.00,2026
+06/18/2026,06/25/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-QW5FTFNBB7BHDBGC4TN252WHMG455ANI,EUR,,476.58,,,,,,
+06/18/2026,,Reserva,HM9BWC42DR,04/14/2026,06/17/2026,06/21/2026,4,Zoe Liberona,Victoria 9 - Apt 3,,,EUR,476.58,,"87,42",,55.00,564.00,0.00,2026
+06/16/2026,06/23/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-4NRWHAS25ZNSWY3AZ3TJ56WWCEU7USZM,EUR,,480.80,,,,,,
+06/16/2026,,Reserva,HMPC55BQYF,06/07/2026,06/15/2026,06/20/2026,5,Rael Kwasnik,Fully Equipped Studio in Lavapiés,,,EUR,480.80,,"88,20",,50.00,569.00,0.00,2026
+06/15/2026,06/22/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-HFYDUC6RZVH7RDPK33FMWPYL22RRQS2H,EUR,,8429.03,,,,,,
+06/15/2026,,Reserva,HMF8PCBDSS,04/26/2026,06/14/2026,06/17/2026,3,Jana-Camille Eiberle,Modern 1BR apartment in Lavapiés,,,EUR,316.87,,"58,13",,60.00,375.00,0.00,2026
+06/15/2026,,Reserva,HMJK4DAXK9,06/11/2026,06/14/2026,07/12/2026,28,Lachezar Hristov,Gran piso 9 hab · Calle Mayor · 12 huéspedes,,,EUR,7550.24,,"1384,96",,0.00,8935.20,0.00,2026
+06/15/2026,,Reserva,HM8CFAXK2R,06/14/2026,06/14/2026,06/20/2026,6,Carlos García Melgoza,Estudio en Ponzano 23 · Chamberí gastronómico,,,EUR,561.92,,"103,08",,55.00,665.00,0.00,2026
+06/13/2026,06/19/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-APK4L2XTPGQGCNR2MROXU2FDMCQQ6YIL,EUR,,2522.32,,,,,,
+06/13/2026,,Reserva,HMJM5XR9HY,05/23/2026,06/12/2026,06/16/2026,4,Melany Guarino,Impresionante piso en Barrio de Chamberí,,,EUR,2154.75,,"395,25",,50.00,2550.00,0.00,2026
+06/13/2026,,Reserva,HMYZHMNCEQ,05/01/2026,06/12/2026,06/15/2026,3,Devon Spieker,Fully Equipped Studio in Lavapiés,,,EUR,367.57,,"67,43",,50.00,435.00,0.00,2026
+06/12/2026,06/19/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-HCLE5E6AXS32HAOEDNHUUTKPX6JZDR2M,EUR,,626.98,,,,,,
+06/12/2026,,Reserva,HM3P5ST5MM,04/06/2026,06/11/2026,06/13/2026,2,Christopher James,Victoria 9 - Apt 3,,,EUR,281.38,,"51,62",,55.00,333.00,0.00,2026
+06/12/2026,,Reserva,HM5ZC8AP5W,06/09/2026,06/11/2026,06/14/2026,3,Nagore Irazuegi,Estudio en Ponzano 23 · Chamberí gastronómico,,,EUR,345.60,,"63,40",,55.00,409.00,0.00,2026
+06/11/2026,06/18/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-U2KT6GJU5YXXJTRSFTXIRMLEV6IFJRXN,EUR,,523.90,,,,,,
+06/11/2026,,Reserva,HM4M3CKTHA,04/26/2026,06/10/2026,06/14/2026,4,Ulf René Röntgen,Modern 1BR apartment in Lavapiés,,,EUR,523.90,,"96,10",,60.00,620.00,0.00,2026
+06/10/2026,06/17/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-MPF5SUPFN4SRR2JDEJ2SJXL5YBUMMB6P,EUR,,200.26,,,,,,
+06/10/2026,,Reserva,HM3H8AHF9C,06/06/2026,06/09/2026,06/11/2026,2,Sergio Sora,Victoria 9 - Apt 3,,,EUR,200.26,,"36,74",,55.00,237.00,0.00,2026
+06/09/2026,06/16/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-EOAYKWLSLASN5FY2GHCH6D3BTHUSGOG7,EUR,,398.84,,,,,,
+06/09/2026,,Reserva,HM4FARWW8W,04/29/2026,06/08/2026,06/12/2026,4,Miguel Feliciano,Fully Equipped Studio in Lavapiés,,,EUR,398.84,,"73,16",,50.00,472.00,0.00,2026
+06/08/2026,06/15/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-HTE5AUS67ZBPNKGD43RXWMVPBHJZNVS5,EUR,,1991.16,,,,,,
+06/08/2026,,Reserva,HMPFY5SJCX,05/29/2026,06/07/2026,06/19/2026,12,Adrián De Paz Marcos,Agradable piso de 5 habitaciones,,,EUR,1991.16,,"365,24",,80.00,2356.40,0.00,2026
+06/07/2026,06/12/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-L3QSUMDXUVHD3TRCLJKLYQTHTTKARR4K,EUR,,5083.01,,,,,,
+06/07/2026,,Reserva,HMXAWXPF5F,06/05/2026,06/06/2026,06/16/2026,10,Jonathan Mercado,Gran piso señorial en Gran Vía · 9 hab ·,,,EUR,5083.01,,"932,39",,0.00,6015.40,0.00,2026
+06/06/2026,06/12/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-Z4S7DOKLBPZJJPVJKB5UQKLRR2L2FAFQ,EUR,,358.99,,,,,,
+06/06/2026,,Ajuste de la resolución,HMYBE28QFN,,06/01/2026,06/08/2026,7,Karina Mariscal,Estudio en Ponzano 23 · Chamberí gastronómico,Ajuste de la resolución 17806774266166,,MXN,-17541.13,,,,,-17541.13,,2026
+06/06/2026,,Reserva,HMY4X85F9W,03/22/2026,06/05/2026,06/09/2026,4,Rafael Serrano,Victoria 9 - Apt 3,,,EUR,534.04,,"97,96",,55.00,632.00,0.00,2026
+06/06/2026,,Reserva,HMXBT9KPYC,06/03/2026,06/05/2026,06/07/2026,2,Francesco Gagliardi,Agradable piso de 5 habitaciones,,,EUR,696.28,,"127,72",,80.00,824.00,0.00,2026
+06/05/2026,06/12/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-2YV2CNKGIU4VJJ4ZVB2RHPS2A4OII4A3,EUR,,1030.05,,,,,,
+06/05/2026,,Reserva,HMEQW8RPYD,05/03/2026,06/04/2026,06/07/2026,3,Mike Ballarini,Fully Equipped Studio in Lavapiés,,,EUR,397.15,,"72,85",,50.00,470.00,0.00,2026
+06/05/2026,,Reserva,HM93W5RHHY,04/26/2026,06/04/2026,06/09/2026,5,Antoine Delplanque,Modern 1BR apartment in Lavapiés,,,EUR,632.90,,"116,10",,60.00,749.00,0.00,2026
+06/03/2026,06/10/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-QCG2UNDBNSF2FLWMJBBRTIT4M5LTOFNG,EUR,,211.25,,,,,,
+06/03/2026,,Reserva,HMC4KEJRNH,05/27/2026,06/02/2026,06/04/2026,2,David Alfonso Jorajuria Lara,Fully Equipped Studio in Lavapiés,,,EUR,211.25,,"38,75",,50.00,250.00,0.00,2026
+06/03/2026,06/10/2026,Payout,,,,,,,,"Transferido a TEPOZ INVESTMENT GROUP S.L., IBAN 5609 (EUR)",G-KNB7UKHLO54FGWYSQK4JUXESIPO3CBSU,EUR,,6755.26,,,,,,
+06/03/2026,,Reserva,HMEA9EQRXF,05/24/2026,06/01/2026,06/05/2026,4,Αποστολος Δεμερτζης,Victoria 9 - Apt 3,,,EUR,402.22,,"73,78",,55.00,476.00,0.00,2026
+06/03/2026,,Reserva,HM3HWFNJHE,05/27/2026,06/01/2026,06/21/2026,20,Sofiane Benchaabane,Gran Piso señorial en Barrio Salamanca · 8 hab,,,EUR,5263.84,,"965,56",,80.00,6229.40,0.00,2026
+06/03/2026,,Reserva,HMYBE28QFN,05/29/2026,06/01/2026,06/08/2026,7,Karina Mariscal,Estudio en Ponzano 23 · Chamberí gastronómico,,,EUR,1089.20,,"199,80",,55.00,1289.00,0.00,2026

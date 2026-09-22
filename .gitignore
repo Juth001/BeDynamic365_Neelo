@@ -1,23 +1,19 @@
-### AL ###
-#Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
-.vscode/
-#Cache folder
-.alcache/
-#Symbols folder
-.alpackages/
-#Snapshots folder
-.snapshots/
-#Testing Output folder
-.output/
-#Extension App-file
+# AL build output
 *.app
-#Rapid Application Development File
+
+# Generated base translation file (regenerated on build); language files (e.g. *.es-ES.xlf) ARE versioned
+Translations/*.g.xlf
+
+# Downloaded symbol packages (large binaries, restored via AL: Download Symbols)
+.alpackages/
+
+# AL test runner artifacts
+.altestrunner/
+
+# AL language server cache (stale entries cause phantom IDE errors; rebuilt automatically)
+.vscode/.alcache/
+
+# AL/VS Code local artifacts
+.snapshots/
 rad.json
-#Translation Base-file
-*.g.xlf
-#License-files
-*.bclicense
-*.flf
-#Test results file
-TestResults.xml
+*.g.xml

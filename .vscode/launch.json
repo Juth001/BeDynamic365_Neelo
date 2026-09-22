@@ -1,0 +1,84 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "SVT-DEV",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "SVT-DEV",
+            "tenant": "f2f33e74-a354-433b-a33f-e62ea88b7af1",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
+        },
+         {
+            "name": "PORTIK-PRE",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "PORTIK-PRE",
+            "tenant": "e1471b65-1608-4c76-85df-7bb55910a6dc",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
+        },
+        {
+            "name": "GOAL-DEV",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "GOAL-DEV",
+            "tenant": "9fab8b14-f0c3-43b9-a09a-c3b37ff59dfd",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
+        },
+        {
+            "name": "MD365BC_NEELO_DEV",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "MD365BC_NEELO_DEV",
+            "tenant": "8d78f46c-5c2f-49bb-b09c-13abc8c3a900",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
+        },
+        {
+            "name": "MD365BC_NEELO_UAT",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "MD365BC_NEELO_UAT",
+            "tenant": "8d78f46c-5c2f-49bb-b09c-13abc8c3a900",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
+        },
+        {
+            "name": "BDY-BASE",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "BDY-BASE",
+            "tenant": "b28cfbe7-4c46-4425-9277-3d66a41ef032",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "schemaUpdateMode": "ForceSync"
+        }
+    ]
+}
